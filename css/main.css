@@ -944,7 +944,7 @@ pre .javascript .function {
   background: #fff;
   border: 2px solid #555;
   text-decoration: none;
-  border-radius: 2px;
+  border-radius: 15px;
   transition-property: background-color;
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
@@ -1642,6 +1642,13 @@ pre .javascript .function {
 .fancybox-close:hover {
   border: none;
 }
+.post-copyright {
+  margin: 2em 0 0;
+  padding: 0.5em 1em;
+  border-left: 3px solid #ff1700;
+  background-color: #f9f9f9;
+  list-style: none;
+}
 .rtl.post-body p,
 .rtl.post-body a,
 .rtl.post-body h1,
@@ -1742,6 +1749,8 @@ pre .javascript .function {
   max-width: 120px;
   height: auto;
   border: 1px solid #eee;
+  border-radius: 50%;
+  transition: 2s all;
 }
 .site-author-name {
   margin: 0;
@@ -1754,6 +1763,13 @@ pre .javascript .function {
   text-align: center;
   font-size: 13px;
   color: #999;
+}
+.site-author-image:hover {
+  -webkit-transform: rotate(360deg);
+  -moz-transform: rotate(360deg);
+  -ms-transform: rotate(360deg);
+  -o-transform: rotate(360deg);
+  transform: rotate(360deg);
 }
 .site-state {
   overflow: hidden;
@@ -1823,7 +1839,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #f4ff5b;
+  background: #ff05ff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2371,29 +2387,6 @@ li.recent_posts_li {
   content: "|";
   padding-left: 10px;
 }
-#needsharebutton-postbottom {
-  position: relative;
-  cursor: pointer;
-  height: 26px;
-}
-#needsharebutton-postbottom .btn {
-  display: initial;
-  padding: 1px 4px;
-  border: 1px solid #555;
-  border-radius: 3px;
-}
-#needsharebutton-float {
-  position: fixed;
-  bottom: 38px;
-  left: -8px;
-  z-index: 9999;
-  cursor: pointer;
-}
-#needsharebutton-float .btn {
-  padding: 0 10px 0 14px;
-  border: 1px solid #555;
-  border-radius: 4px;
-}
 .page-archive .archive-page-counter {
   position: relative;
   top: 3px;
@@ -2768,6 +2761,9 @@ li.recent_posts_li {
 .sidebar-position-right .footer-inner {
   padding-left: 0;
   padding-right: 260px;
+}
+.sidebar {
+  background-color: transparent;
 }
 .site-brand-wrapper {
   position: relative;
@@ -3152,4 +3148,30 @@ li.recent_posts_li {
   .pagination {
     margin: 8px 0 0;
   }
+}
+.sidebar {
+  background-color: transparent;
+}
+.post {
+  margin-top: 60px;
+  margin-bottom: 60px;
+  padding: 25px;
+  -webkit-box-shadow: 0 0 5px rgba(202,203,203,0.5);
+  -moz-box-shadow: 0 0 5px rgba(202,203,204,0.5);
+}
+.back-to-top {
+  right: 60px;
+  width: 70px;
+  height: 350px;
+  opacity: 1;
+  bottom: unset;
+  transition: all 0.5s ease-in-out;
+  background: url("/images/scroll.png");
+}
+.back-to-top > i {
+  display: none;
+}
+.back-to-top.back-to-top-on {
+  bottom: unset;
+  top: 0px;
 }
