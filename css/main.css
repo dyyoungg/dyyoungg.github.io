@@ -1842,7 +1842,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #c25ecc;
+  background: #256706;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3176,20 +3176,28 @@ li.recent_posts_li {
   -moz-box-shadow: 0 0 5px rgba(202,203,204,0.5);
 }
 .back-to-top {
-  right: 60px;
-  width: 70px;
-  height: 350px;
+  right: 120px; /* 侧边栏宽度为 240px，按钮放在侧边栏中间 */
+  width: 50px; /* 按钮宽度 */
+  height: 50px; /* 按钮高度 */
   opacity: 1;
   bottom: unset;
   transition: all 0.5s ease-in-out;
-  background: url("/images/scroll.png");
+  background: url("/images/scroll.png") no-repeat center center; /* 背景图片居中显示 */
+  background-size: contain; /* 背景图片自适应按钮大小 */
+/* 隐藏箭头图标 */
+/* 按钮显示时的位置 */
 }
 .back-to-top > i {
   display: none;
 }
 .back-to-top.back-to-top-on {
   bottom: unset;
-  top: 0px;
+  top: 50vh; /* 按钮垂直居中 */
+  -webkit-transform: translateX(180%);
+  -moz-transform: translateX(180%);
+  -ms-transform: translateX(180%);
+  -o-transform: translateX(180%);
+  transform: translateX(180%); /* 调整垂直居中 */
 }
 .tabs ul.nav-tabs li.tab.active,
 .tabs .tab-content {

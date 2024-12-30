@@ -19,7 +19,7 @@
     
     
   <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
-  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+  <link href="/lib/pace/pace-theme-center-simple.min.css?v=1.0.2" rel="stylesheet">
 
 
 
@@ -120,6 +120,7 @@
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     }
   };
+
 </script>
 
 
@@ -226,9 +227,9 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
+          <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
             
             归档
           </a>
@@ -324,9 +325,9 @@
 
       <h3 class="post-title">
         
-            <a class="post-title-link" href="/posts/1243066710/" itemprop="url">
+            <a class="post-title-link" href="/posts/1962388397/" itemprop="url">
               
-                <span itemprop="name">Hello World</span>
+                <span itemprop="name">Hexo + Next 博客配置记录</span>
               
             </a>
         
@@ -334,9 +335,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2024-12-27T21:21:02+08:00"
-              content="2024-12-27" >
-          12-27
+              datetime="2024-12-26T12:49:50+08:00"
+              content="2024-12-26" >
+          12-26
         </time>
       </div>
 
@@ -403,7 +404,7 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/archives%7C%7C%20archive">
+                <a href="/archives/">
               
                   <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">日志</span>
@@ -427,12 +428,11 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
             
-
           </nav>
 
           
@@ -467,7 +467,7 @@
                 
                 
                   <li class="recent_posts_li">
-                    <a href="/posts/1243066710/" title="Hello World" target="_blank">Hello World</a>
+                    <a href="/posts/1962388397/" title="Hexo + Next 博客配置记录" target="_blank">Hexo + Next 博客配置记录</a>
                   </li>
                 
               </ul>
@@ -520,7 +520,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">75</span>
+    <span title="Site words total count">1.4k</span>
   
 </div>
 
@@ -1071,6 +1071,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 
