@@ -6,64 +6,64 @@
     <content><![CDATA[<p>很久之前就想写博客，但由于懒加嫌麻烦一直搁置。但逐渐发现学习的东西不断变多，一直记在脑子也难免遗忘，因此还是决定开个博客，一是作为自己平时学习积累的一个记录，梳理平时学习的思路，二来可以将个人浅薄的见解输出，帮助到有需要的人吧。</p>
 <p>第一篇博客，当然是从环境配置开始。简单上网搜一下，就知道Hexo + Next + Github + Vscode 应该是简易博客的标配了，Hexo 是基于 Node.js 的静态博客生成器，生成静态页面的速度非常快， Next主题提供多种样式（Muse、Mist、Pisces、Gemini），GitHub Pages 提供免费的静态网站托管服务，Vscode 作为文本编辑器，结合markdown插件，在本地写作时可以Preview博客。对个人博客而言，上述组合应该是绰绰有余啦。</p>
 <span id="more"></span>
-<h2 id="前置工作">前置工作</h2>
-<h3 id="gitnodejs安装配置">Git/Node.js安装配置</h3>
-<p>需要提前安装 Node.js / Git，稍微ChatGPT一下就好啦。Git 需要生成的id_rsa.pub 添加到Github SSH key中。然后测试 SSH连接是否成功</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
-<h3 id="hexo环境安装">Hexo环境安装</h3>
-<p>在安装完 Node.js 和 Git 后，可以通过 npm 安装 Hexo 命令行工具。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<h2 id="前置工作"><a href="#前置工作" class="headerlink" title="前置工作"></a>前置工作</h2><h3 id="gitx2fnodejs安装配置"><a href="#Git-Node-js安装配置" class="headerlink" title="Git&#x2F;Node.js安装配置"></a>Git&#x2F;Node.js安装配置</h3><p>需要提前安装 Node.js &#x2F; Git，稍微ChatGPT一下就好啦。Git 需要生成的id_rsa.pub 添加到Github SSH key中。然后测试 SSH连接是否成功</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">ssh -T git@github.com<br></code></pre></td></tr></table></figure>
+
+<h3 id="hexo环境安装"><a href="#Hexo环境安装" class="headerlink" title="Hexo环境安装"></a>Hexo环境安装</h3><p>在安装完 Node.js 和 Git 后，可以通过 npm 安装 Hexo 命令行工具。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">npm install -g hexo-cli<br></code></pre></td></tr></table></figure>
 <p>此时就可以新建一个blog文件夹了，然后安装相关依赖</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. hexo init blog</span><br><span class="line">2. 进入上条命令所创建的 blog 文件夹中：cd blog</span><br><span class="line">3. 安装相关依赖：npm install</span><br><span class="line">4. 启动 Hexo 服务：hexo server(或直接 hexo s)</span><br><span class="line">5. npm i hexo-renderer-swig (hexo 在5.0之后把 swig 删除了，需要自己手动安装, 不然渲染出错)</span><br><span class="line">6. 访问默认界面，测试是否安装成功：浏览器访问localhost:4000</span><br></pre></td></tr></table></figure>
-<h3 id="next主题安装">Next主题安装</h3>
-<p>接下来配置<a href="https://github.com/iissnan/hexo-theme-next">Next</a>主题，这是Hexo的一个主题插件，类似的还有<a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a>，<a href="https://github.com/ppoffice/hexo-theme-icarus">Icarus</a>，<a href="https://github.com/litten/hexo-theme-yilia">Yilia</a>等等。经过上一步的配置，现在blog文件夹下将会有站点配置文件 _config.yml, 这是Hexo 博客的核心配置文件，用于定义博客的全局设置和功能选项。通过修改 _config.yml，可以自定义博客的外观、功能、部署方式等。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">1. hexo init blog<br>2. 进入上条命令所创建的 blog 文件夹中：cd blog<br>3. 安装相关依赖：npm install<br>4. 启动 Hexo 服务：hexo server(或直接 hexo s)<br>5. npm i hexo-renderer-swig (hexo 在5.0之后把 swig 删除了，需要自己手动安装, 不然渲染出错)<br>6. 访问默认界面，测试是否安装成功：浏览器访问localhost:4000<br></code></pre></td></tr></table></figure>
+
+<h3 id="next主题安装"><a href="#Next主题安装" class="headerlink" title="Next主题安装"></a>Next主题安装</h3><p>接下来配置<a href="https://github.com/iissnan/hexo-theme-next">Next</a>主题，这是Hexo的一个主题插件，类似的还有<a href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a>，<a href="https://github.com/ppoffice/hexo-theme-icarus">Icarus</a>，<a href="https://github.com/litten/hexo-theme-yilia">Yilia</a>等等。经过上一步的配置，现在blog文件夹下将会有站点配置文件 _config.yml, 这是Hexo 博客的核心配置文件，用于定义博客的全局设置和功能选项。通过修改 _config.yml，可以自定义博客的外观、功能、部署方式等。</p>
 <p>首先进入上一步创建的 blog 文件夹中，将 Next 主题相关文件从 github 克隆到 themes 文件夹中</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">git clone https://github.com/iissnan/hexo-theme-next themes/next<br></code></pre></td></tr></table></figure>
 <p>然后修改 _config.yml中的主题参数</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">theme: next</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">theme: next<br></code></pre></td></tr></table></figure>
 <p>然后按照Step2 验证一下 localhost:4000的页面渲染效果</p>
-<h3 id="github部署">Github部署</h3>
-<p>首先去github 新建一个个人仓库，并设置为公开，仓库名格式为 <a href="http://username.github.io">username.github.io</a>， username就是Github username</p>
+<h3 id="github部署"><a href="#Github部署" class="headerlink" title="Github部署"></a>Github部署</h3><p>首先去github 新建一个个人仓库，并设置为公开，仓库名格式为 username.github.io， username就是Github username</p>
 <p>在 站点配置文件 _config.yml 找到deploy部分，配置如下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: &#x27;git&#x27;</span><br><span class="line">  repository: git@github.com:username/username.github.io.git</span><br><span class="line">  branch: main</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">deploy:<br>  type: &#x27;git&#x27;<br>  repository: git@github.com:username/username.github.io.git<br>  branch: main<br></code></pre></td></tr></table></figure>
 <p>在blog项目目录下安装 deployer-git插件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-<p>最后生成静态博客并部署到github，过十几分钟就能访问 <a href="https://username.github.io">https://username.github.io</a> 网址看到渲染的页面了</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate -d</span><br></pre></td></tr></table></figure>
-<h2 id="next主题优化">Next主题优化</h2>
-<p>经过上述Next主题安装，在 /themes/next 目录下将会有 主题配置文件 _config.yml。大部分功能都能通过修改config的参数实现和安装相应包实现，具体的一些设置可以参考这篇博文：<a href="https://www.dragonstyle.win/3358042383.html">https://www.dragonstyle.win/3358042383.html</a> ，按照自己的需求去修改。以下是我觉得比较重要，影响写作体验和效果的一些小tips。</p>
-<h3 id="公式渲染">公式渲染</h3>
-<p>写文章难免会敲latex公式，一般使用MathJax，一个用于在网页中渲染数学公式的JavaScripts库。Hexo默认使用Marked进行渲染，但是却不能渲染mathjax，需要换成 Kramed.</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">npm install hexo-renderer-kramed --save</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">npm install hexo-deployer-git --save<br></code></pre></td></tr></table></figure>
+<p>最后生成静态博客并部署到github，过十几分钟就能访问 <a href="https://username.github.io/">https://username.github.io</a> 网址看到渲染的页面了</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">hexo clean &amp;&amp; hexo generate -d<br></code></pre></td></tr></table></figure>
+
+
+<h2 id="next主题优化"><a href="#Next主题优化" class="headerlink" title="Next主题优化"></a>Next主题优化</h2><p>经过上述Next主题安装，在 &#x2F;themes&#x2F;next 目录下将会有 主题配置文件 _config.yml。大部分功能都能通过修改config的参数实现和安装相应包实现，具体的一些设置可以参考这篇博文：<a href="https://www.dragonstyle.win/3358042383.html">https://www.dragonstyle.win/3358042383.html</a> ，按照自己的需求去修改。以下是我觉得比较重要，影响写作体验和效果的一些小tips。</p>
+<h3 id="公式渲染"><a href="#公式渲染" class="headerlink" title="公式渲染"></a>公式渲染</h3><p>写文章难免会敲latex公式，一般使用MathJax，一个用于在网页中渲染数学公式的JavaScripts库。Hexo默认使用Marked进行渲染，但是却不能渲染mathjax，需要换成 Kramed. </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">npm uninstall hexo-renderer-marked --save<br>npm install hexo-renderer-kramed --save<br></code></pre></td></tr></table></figure>
 <p>然后卸载原来的hexo-math， 安装hexo-renderer-mathjax包</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-math --save</span><br><span class="line">npm install hexo-renderer-mathjax --save</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">npm uninstall hexo-math --save<br>npm install hexo-renderer-mathjax --save<br></code></pre></td></tr></table></figure>
 <p>最后修改 主题配置文件中的mathjax 选项，Next版本5.1.4中的配置是这样的</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mathjax:</span><br><span class="line">  enable: true</span><br><span class="line">  per_page: true</span><br><span class="line">  cdn: //cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML</span><br></pre></td></tr></table></figure>
-<h3 id="本地markdown-preview图像路径问题">本地Markdown Preview图像路径问题</h3>
-<p>使用vscode作为文本编辑器在本地写markdown博客时，需要渲染观察效果，而普通的preview是不会渲染latext公式和图表等信息的，这时候可以换成 Markdown Preview Enhanced 插件。</p>
-<p>安装插件后，打开插件的settings， 需要修改默认的 ImageFolder Path 以支持插件找到图像，原本默认的是 /asset（插件安装目录下）， 需要修改到 source/_posts 文件夹， 填写绝对路径即可，比如</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">D:\blog\source\_posts</span><br></pre></td></tr></table></figure>
-<p>为了便于博客图像管理，可以将站点配置文件中将 <em>post_asset_folder</em> 设置为 true，这样的话当你使用 hexo new title 创建一篇新文章时，Hexo 会自动在 source/_posts 目录下创建一个与文章同名的文件夹，下面可以存放不同博客的图像资源。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">source/_posts/</span><br><span class="line">├── my-post.md</span><br><span class="line">└── my-post/</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">mathjax:<br>  enable: true<br>  per_page: true<br>  cdn: //cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML<br></code></pre></td></tr></table></figure>
+
+<h3 id="本地markdown-preview图像路径问题"><a href="#本地Markdown-Preview图像路径问题" class="headerlink" title="本地Markdown Preview图像路径问题"></a>本地Markdown Preview图像路径问题</h3><p>使用vscode作为文本编辑器在本地写markdown博客时，需要渲染观察效果，而普通的preview是不会渲染latext公式和图表等信息的，这时候可以换成 Markdown Preview Enhanced 插件。</p>
+<p>安装插件后，打开插件的settings， 需要修改默认的 ImageFolder Path 以支持插件找到图像，原本默认的是 &#x2F;asset（插件安装目录下）， 需要修改到 source&#x2F;_posts 文件夹， 填写绝对路径即可，比如</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">D:\blog\source\_posts<br></code></pre></td></tr></table></figure>
+<p>为了便于博客图像管理，可以将站点配置文件中将 <em>post_asset_folder</em> 设置为 true，这样的话当你使用 hexo new title 创建一篇新文章时，Hexo 会自动在 source&#x2F;_posts 目录下创建一个与文章同名的文件夹，下面可以存放不同博客的图像资源。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">source/_posts/<br>├── my-post.md<br>└── my-post/<br></code></pre></td></tr></table></figure>
 <p>而默认情况下，Hexo 的 post_asset_folder 功能只会为每篇文章创建一个资源文件夹，但并不会自动处理图片路径。如果你直接在 Markdown 中引用图片，生成的 HTML 文件中的图片路径可能会出错。这时候需要安装 hexo-asset-image 插件。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install hexo-asset-image --save</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">npm install hexo-asset-image --save<br></code></pre></td></tr></table></figure>
 <p>然后在写博客时 引用图像就可以使用如下形式, 这样既能 在本地和网页中就都能找到正确的图像路径并且进行渲染了。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">![图片描述](./my-post/image.png)</span><br><span class="line">*&lt;center&gt;图 1: xxx &lt;/center&gt;*</span><br></pre></td></tr></table></figure>
-<h3 id="评论系统">评论系统</h3>
-<p>看网上使用各种的都有，看了一眼主题配置文件和源码， 有这么些是 Next 5.1.4 版本支持的。源码在 /next/layout/_partials/comments.swig 文件中，如下所示</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% if page.comments %&#125;</span><br><span class="line"></span><br><span class="line">  &#123;% if (theme.duoshuo and theme.duoshuo.shortname) or theme.duoshuo_shortname %&#125;</span><br><span class="line">    &lt;div class=&quot;comments&quot; id=&quot;comments&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;ds-thread&quot; data-thread-key=&quot;&#123;&#123; page.path &#125;&#125;&quot;</span><br><span class="line">           data-title=&quot;&#123;&#123; page.title &#125;&#125;&quot; data-url=&quot;&#123;&#123; page.permalink &#125;&#125;&quot;&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &#123;% elseif theme.facebook_sdk.enable and theme.facebook_comments_plugin.enable %&#125;</span><br><span class="line">    &lt;div class=&quot;comments&quot; id=&quot;comments&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;fb-comments&quot;</span><br><span class="line">           data-href=&quot;&#123;&#123; page.permalink &#125;&#125;&quot;</span><br><span class="line">           data-numposts=&quot;&#123;&#123; theme.facebook_comments_plugin.num_of_posts &#125;&#125;&quot;</span><br><span class="line">           data-width=&quot;&#123;&#123; theme.facebook_comments_plugin.width &#125;&#125;&quot;</span><br><span class="line">           data-colorscheme=&quot;&#123;&#123; theme.facebook_comments_plugin.scheme &#125;&#125;&quot;&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  ......</span><br><span class="line"></span><br><span class="line">  &#123;% endif %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% endif %&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">![图片描述](./my-post/image.png)<br>*&lt;center&gt;图 1: xxx &lt;/center&gt;*<br></code></pre></td></tr></table></figure>
+
+<h3 id="评论系统"><a href="#评论系统" class="headerlink" title="评论系统"></a>评论系统</h3><p>看网上使用各种的都有，看了一眼主题配置文件和源码， 有这么些是 Next 5.1.4 版本支持的。源码在 &#x2F;next&#x2F;layout&#x2F;_partials&#x2F;comments.swig 文件中，如下所示</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs swig">&#123;% if page.comments %&#125;<br><br>  &#123;% if (theme.duoshuo and theme.duoshuo.shortname) or theme.duoshuo_shortname %&#125;<br>    &lt;div class=&quot;comments&quot; id=&quot;comments&quot;&gt;<br>      &lt;div class=&quot;ds-thread&quot; data-thread-key=&quot;&#123;&#123; page.path &#125;&#125;&quot;<br>           data-title=&quot;&#123;&#123; page.title &#125;&#125;&quot; data-url=&quot;&#123;&#123; page.permalink &#125;&#125;&quot;&gt;<br>      &lt;/div&gt;<br>    &lt;/div&gt;<br><br>  &#123;% elseif theme.facebook_sdk.enable and theme.facebook_comments_plugin.enable %&#125;<br>    &lt;div class=&quot;comments&quot; id=&quot;comments&quot;&gt;<br>      &lt;div class=&quot;fb-comments&quot;<br>           data-href=&quot;&#123;&#123; page.permalink &#125;&#125;&quot;<br>           data-numposts=&quot;&#123;&#123; theme.facebook_comments_plugin.num_of_posts &#125;&#125;&quot;<br>           data-width=&quot;&#123;&#123; theme.facebook_comments_plugin.width &#125;&#125;&quot;<br>           data-colorscheme=&quot;&#123;&#123; theme.facebook_comments_plugin.scheme &#125;&#125;&quot;&gt;<br>      &lt;/div&gt;<br>    &lt;/div&gt;<br>  ......<br><br>  &#123;% endif %&#125;<br><br>&#123;% endif %&#125;<br><br></code></pre></td></tr></table></figure>
 <p>试了一下推荐比较多的Gitment，发现老是登入出问题，无法评论，而且看网上说需要每次手动初始化评论？Valine 也是类似的需要注册申请，填写 appid 和appkey，就没有再试了，gitalk配置好了又渲染不出来，很奇怪。最后看到了Utterances， 也是类似Gitment使用github issue存储评论，看安装比较简单，于是安装了一下，并且能生效。</p>
 <p>首先点击这个网址安装Utterances <a href="https://github.com/apps/utterances">Install Utterances App</a>，一路默认就好。然后修改主题配置，添加 Utterances 相关的配置项，</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">utterances:</span><br><span class="line">  enable: true</span><br><span class="line">  repo: dyyoungg/dyyoungg.github.io # Github repository owner and name</span><br><span class="line">  # Available values: pathname | url | title | og:title</span><br><span class="line">  issue_term: title</span><br><span class="line">  label: comments </span><br><span class="line">  # Available values: github-light | github-dark | preferred-color-scheme | github-dark-orange | icy-dark | dark-blue | photon-dark | boxy-light</span><br><span class="line">  theme: github-light</span><br></pre></td></tr></table></figure>
-<p>并在 /next/layout/_partials/comments.swig 文件中添加以下代码，就是多补充一个elif逻辑。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% elseif theme.utterances.enable %&#125;</span><br><span class="line">    &lt;div class=&quot;comments&quot; id=&quot;comments&quot;&gt;</span><br><span class="line">      &lt;script src=&quot;https://utteranc.es/client.js&quot;</span><br><span class="line">              repo=&quot;&#123;&#123; theme.utterances.repo &#125;&#125;&quot;</span><br><span class="line">              issue-term=&quot;&#123;&#123; theme.utterances.issue_term &#125;&#125;&quot;</span><br><span class="line">              label=&quot;&#123;&#123; theme.utterances.label &#125;&#125;&quot;</span><br><span class="line">              theme=&quot;&#123;&#123; theme.utterances.theme &#125;&#125;&quot;</span><br><span class="line">              crossorigin=&quot;anonymous&quot;</span><br><span class="line">              async&gt;</span><br><span class="line">      &lt;/script&gt;</span><br><span class="line">    &lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs plaintext">utterances:<br>  enable: true<br>  repo: dyyoungg/dyyoungg.github.io # Github repository owner and name<br>  # Available values: pathname | url | title | og:title<br>  issue_term: title<br>  label: comments <br>  # Available values: github-light | github-dark | preferred-color-scheme | github-dark-orange | icy-dark | dark-blue | photon-dark | boxy-light<br>  theme: github-light<br></code></pre></td></tr></table></figure>
+<p>并在 &#x2F;next&#x2F;layout&#x2F;_partials&#x2F;comments.swig 文件中添加以下代码，就是多补充一个elif逻辑。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs swig">&#123;% elseif theme.utterances.enable %&#125;<br>    &lt;div class=&quot;comments&quot; id=&quot;comments&quot;&gt;<br>      &lt;script src=&quot;https://utteranc.es/client.js&quot;<br>              repo=&quot;&#123;&#123; theme.utterances.repo &#125;&#125;&quot;<br>              issue-term=&quot;&#123;&#123; theme.utterances.issue_term &#125;&#125;&quot;<br>              label=&quot;&#123;&#123; theme.utterances.label &#125;&#125;&quot;<br>              theme=&quot;&#123;&#123; theme.utterances.theme &#125;&#125;&quot;<br>              crossorigin=&quot;anonymous&quot;<br>              async&gt;<br>      &lt;/script&gt;<br>    &lt;/div&gt;<br></code></pre></td></tr></table></figure>
+
+
 ]]></content>
       <categories>
         <category>Hexo</category>
       </categories>
       <tags>
-        <tag>博客搭建</tag>
-        <tag>主题优化</tag>
+        <tag>Next主题优化</tag>
+        <tag>Hexo博客搭建</tag>
       </tags>
   </entry>
 </search>
