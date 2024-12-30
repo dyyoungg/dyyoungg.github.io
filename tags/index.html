@@ -372,11 +372,15 @@
 
   
     <div class="comments" id="comments">
-      
-        <div id="gitment-container"></div>
-      
+      <script src="https://utteranc.es/client.js"
+              repo="dyyoungg/dyyoungg.github.io"
+              issue-term="title"
+              label="comments"
+              theme="github-light"
+              crossorigin="anonymous"
+              async>
+      </script>
     </div>
-
   
 
 
@@ -724,43 +728,6 @@
 
 
 
-
-
-<!-- LOCAL: You can save these files to your site and update links -->
-    
-        
-        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
-        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
-    
-<!-- END LOCAL -->
-
-    
-
-    
-      <script type="text/javascript">
-      function renderGitment(){
-        var gitment = new Gitmint({
-            id: window.location.pathname, 
-            owner: 'dyyoungg',
-            repo: 'dyyoungg.github.io',
-            
-            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
-            
-            oauth: {
-            
-            
-                client_secret: '387bb49c8dd8ebe0eaf42d85b16fda9987157f64',
-            
-                client_id: 'Ov23li2ys3uPEIZJwEI6'
-            }});
-        gitment.render('gitment-container');
-      }
-
-      
-      renderGitment();
-      
-      </script>
-    
 
 
 
