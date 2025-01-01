@@ -1047,7 +1047,7 @@ pre .javascript .function {
   }
 }
 .comments {
-  margin: 60px 20px 0;
+  margin: 60px 25px 0;
 }
 .tag-cloud {
   text-align: center;
@@ -1842,7 +1842,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff98da;
+  background: #ff3736;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3157,9 +3157,9 @@ li.recent_posts_li {
   background-color: transparent;
 }
 .post {
-  margin-top: 60px;
-  margin-bottom: 60px;
-  padding: 25px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 0px;
   -webkit-box-shadow: 0 0 5px rgba(202,203,203,0.5);
   -moz-box-shadow: 0 0 5px rgba(202,203,204,0.5);
 }
@@ -3325,4 +3325,63 @@ code {
 }
 .tabs ul.nav-tabs li.tab.active a {
   font-size: 19px;
+}
+.post-body .popular-posts-container {
+  background-color: #fff;
+  margin: 0px 0px 10px 0px;
+  padding: 5px;
+  -webkit-box-shadow: 0 0 5px rgba(202,203,203,0.5);
+  -moz-box-shadow: 0 0 5px rgba(202,203,204,0.5);
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .post-body .popular-posts-container {
+    margin: 0 25px 15px 25px;
+  }
+}
+@media (max-width: 767px) {
+  .post-body .popular-posts-container {
+    margin: 0 15px 15px 18px;
+  }
+}
+.post-body .popular-posts-container .popular-posts-header {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  -webkit-box-shadow: 0 0 5px rgba(202,203,203,0.5);
+  -moz-box-shadow: 0 0 5px rgba(202,203,204,0.5);
+}
+.post-body .popular-posts-container .popular-posts {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  -webkit-box-shadow: 0 0 5px rgba(202,203,203,0.5);
+  -moz-box-shadow: 0 0 5px rgba(202,203,204,0.5);
+}
+.post-body .popular-posts-container .popular-posts-item {
+  margin-top: 5px;
+}
+.post-body .popular-posts-container .popular-posts-item:first-child {
+  margin-top: 0;
+}
+.post-body .popular-posts-container .popular-posts-item .popular-posts-title {
+  font-size: 1em;
+  font-weight: normal;
+  line-height: 1.4;
+  margin: 3px 0;
+}
+.post-body .popular-posts-container .popular-posts-item .popular-posts-title a {
+  color: #555;
+  border-bottom: 1px solid #999;
+}
+.post-body .popular-posts-container .popular-posts-item .popular-posts-title a:hover {
+  color: #222;
+  border-bottom-color: #222;
+}
+.posts-expand .post-body .popular-posts-header,
+.posts-expand .post-body .popular-posts {
+  background-color: transparent;
+  box-shadow: none;
+  margin: 0;
 }
