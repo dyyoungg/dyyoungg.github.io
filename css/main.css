@@ -1842,7 +1842,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #fa9ff1;
+  background: #ff0320;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3384,4 +3384,19 @@ code {
   background-color: transparent;
   box-shadow: none;
   margin: 0;
+}
+.post-share {
+  margin: 2em 0;
+  padding-top: 1em;
+  border-top: 1px solid #eee;
+  text-align: center;
+}
+.post-share .social-share {
+  display: inline-block;
+}
+.post-share .social-share .social-share-icon {
+  margin: 0 4px;
+}
+.post-share .social-share .social-share-icon:hover {
+  opacity: 0.8;
 }

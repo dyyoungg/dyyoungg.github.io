@@ -145,6 +145,10 @@
 
 
 
+  
+    <link rel="stylesheet" href="https://lib.baomitu.com/social-share.js/1.0.16/css/share.min.css">
+    <script src="https://lib.baomitu.com/social-share.js/1.0.16/js/social-share.min.js"></script>
+  
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -421,6 +425,42 @@
           
 
         </div>
+
+        
+          <div class="post-jinrishici">
+            <div class="jinrishici-container">
+              <span id="jinrishici-sentence">正在加载今日诗词...</span>
+            </div>
+            
+            <script src="//sdk.jinrishici.com/v2/browser/jinrishici.js"></script>
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                jinrishici.load(function(result) {
+                  const data = result.data;
+                  console.log('诗词数据:', data); // 调试信息
+                  
+                  let author = data.origin.author;
+                  let title = '《' + data.origin.title + '》';
+                  let content = data.content;
+                  let dynasty = data.origin.dynasty;
+                  
+                  // 构建完整的显示文本
+                  let fullText = content + '@' + dynasty + ' · ' + author + ' · ' + title;
+                  console.log('完整文本:', fullText);
+                  
+                  // 确保元素存在
+                  let element = document.getElementById('jinrishici-sentence');
+                  if (element) {
+                    element.textContent = fullText; // 使用 textContent 替代 innerHTML
+                  } else {
+                    console.error('找不到诗词显示元素');
+                  }
+                });
+              });
+            </script>
+          </div>
+        
+
       </header>
     
 
@@ -491,6 +531,18 @@
 <p>并在 /next/layout/_partials/comments.swig 文件中添加以下代码，就是多补充一个elif逻辑。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs swig">&#123;% elseif theme.utterances.enable %&#125;<br>    &lt;div class=&quot;comments&quot; id=&quot;comments&quot;&gt;<br>      &lt;script src=&quot;https://utteranc.es/client.js&quot;<br>              repo=&quot;&#123;&#123; theme.utterances.repo &#125;&#125;&quot;<br>              issue-term=&quot;&#123;&#123; theme.utterances.issue_term &#125;&#125;&quot;<br>              label=&quot;&#123;&#123; theme.utterances.label &#125;&#125;&quot;<br>              theme=&quot;&#123;&#123; theme.utterances.theme &#125;&#125;&quot;<br>              crossorigin=&quot;anonymous&quot;<br>              async&gt;<br>      &lt;/script&gt;<br>    &lt;/div&gt;<br></code></pre></td></tr></table></figure>
 
+      
+
+      
+        <div class="post-share">
+          <div class="social-share" 
+               data-sites="weibo,qq,wechat,douban,linkedin,facebook,google"
+               
+               data-wechat-qrcode-title="分享到微信"
+               data-wechat-qrcode-helper="扫一扫，分享到微信"
+               
+          ></div>
+        </div>
       
     </div>
     
@@ -630,7 +682,6 @@
               repo="dyyoungg/dyyoungg.github.io"
               issue-term="title"
               label="comments"
-              data-custom-token=""
               theme="github-light"
               crossorigin="anonymous"
               async>
