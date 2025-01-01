@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>算法修仙指北：入门到放弃</title>
+  <icon>https://dyyoungg.github.io/icon.png</icon>
+  <subtitle>一个算法选手的摸鱼笔记，日常写bug、修bug、假装自己很懂</subtitle>
+  <link href="https://dyyoungg.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://dyyoungg.github.io/"/>
+  <updated>2025-01-01T14:37:01.830Z</updated>
+  <id>https://dyyoungg.github.io/</id>
+  
+  <author>
+    <name>dyyoung</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hexo + Next 博客配置记录</title>
+    <link href="https://dyyoungg.github.io/posts/1962388397/"/>
+    <id>https://dyyoungg.github.io/posts/1962388397/</id>
+    <published>2024-12-26T04:49:50.000Z</published>
+    <updated>2025-01-01T14:37:01.830Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;很久之前就想写博客，但由于懒加嫌麻烦一直搁置。但逐渐发现学习的东西不断变多，一直记在脑子也难免遗忘，因此还是决定开个博客，一是作为自己平时学习积累的一个记录，梳理平时学习的思路，二来可以将个人浅薄的见解输出，帮助到有需要的人吧。&lt;/p&gt;
+&lt;p&gt;第一篇博客，当然是从环境配置开始。简单上网搜一下，就知道Hexo + Next + Github + Vscode 应该是简易博客的标配了，Hexo 是基于 Node.js 的静态博客生成器，生成静态页面的速度非常快， Next主题提供多种样式（Muse、Mist、Pisces、Gemini），GitHub Pages 提供免费的静态网站托管服务，Vscode 作为文本编辑器，结合markdown插件，在本地写作时可以Preview博客。对个人博客而言，上述组合应该是绰绰有余啦。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Hexo" scheme="https://dyyoungg.github.io/categories/Hexo/"/>
+    
+    
+    <category term="Hexo博客搭建" scheme="https://dyyoungg.github.io/tags/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
+    
+    <category term="Next主题优化" scheme="https://dyyoungg.github.io/tags/Next%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96/"/>
+    
+  </entry>
+  
+</feed>

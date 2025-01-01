@@ -1842,7 +1842,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff0320;
+  background: #11d228;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3399,4 +3399,40 @@ code {
 }
 .post-share .social-share .social-share-icon:hover {
   opacity: 0.8;
+}
+.post-jinrishici {
+  position: relative;
+  text-align: center;
+  margin: 0px 5px;
+  padding: 0.2em 0;
+  border-bottom: 2px dashed #ddd;
+}
+.post-jinrishici .jinrishici-container {
+  margin-top: -5px;
+  font-size: v-bind('theme.jinrishici.style.font_size');
+  color: v-bind('theme.jinrishici.style.color');
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-style: italic;
+}
+.post-jinrishici .jinrishici-container #jinrishici-sentence {
+  display: inline-block;
+  margin: v-bind('theme.jinrishici.style.margin');
+  line-height: 1.6;
+  white-space: normal;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+.post-jinrishici .jinrishici-container #jinrishici-sentence::before {
+  content: '"';
+  margin-right: 5px;
+  opacity: 0.5;
+}
+.post-jinrishici .jinrishici-container #jinrishici-sentence::after {
+  content: '"';
+  margin-left: 5px;
+  opacity: 0.5;
+}
+.post-jinrishici .jinrishici-container #jinrishici-sentence {
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif !important;
+  border-bottom: none !important;
 }
