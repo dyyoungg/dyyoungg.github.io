@@ -487,8 +487,8 @@ pre,
   margin: 20px 0;
   padding: 0;
   font-size: 13px;
-  color: #eaeaea;
-  background: #000;
+  color: #ccc;
+  background: #2d2d2d;
   line-height: 1.6;
 }
 pre,
@@ -508,7 +508,7 @@ pre {
 }
 pre code {
   padding: 0;
-  color: #eaeaea;
+  color: #ccc;
   background: none;
   text-shadow: none;
 }
@@ -531,7 +531,7 @@ pre code {
 }
 .highlight figcaption {
   font-size: 1em;
-  color: #eaeaea;
+  color: #ccc;
   line-height: 1em;
   margin-bottom: 1em;
 }
@@ -545,23 +545,23 @@ pre code {
 }
 .highlight figcaption a {
   float: right;
-  color: #eaeaea;
+  color: #ccc;
 }
 .highlight figcaption a:hover {
-  border-bottom-color: #eaeaea;
+  border-bottom-color: #ccc;
 }
 .highlight .gutter pre {
   padding-left: 10px;
   padding-right: 10px;
-  color: #666;
+  color: #999;
   text-align: right;
-  background-color: #292929;
+  background-color: #1b1b1b;
 }
 .highlight .code pre {
   width: 100%;
   padding-left: 10px;
   padding-right: 10px;
-  background-color: #000;
+  background-color: #2d2d2d;
 }
 .highlight .line {
   height: 20px;
@@ -585,10 +585,10 @@ pre .addition {
   background: #800000;
 }
 pre .meta {
-  color: #c397d8;
+  color: #c9c;
 }
 pre .comment {
-  color: #969896;
+  color: #999;
 }
 pre .variable,
 pre .attribute,
@@ -602,7 +602,7 @@ pre .html .doctype,
 pre .css .id,
 pre .css .class,
 pre .css .pseudo {
-  color: #d54e53;
+  color: #f2777a;
 }
 pre .number,
 pre .preprocessor,
@@ -611,7 +611,7 @@ pre .literal,
 pre .params,
 pre .constant,
 pre .command {
-  color: #e78c45;
+  color: #f99157;
 }
 pre .ruby .class .title,
 pre .css .rules .attribute,
@@ -624,11 +624,11 @@ pre .xml .cdata,
 pre .special,
 pre .number,
 pre .formula {
-  color: #b9ca4a;
+  color: #9c9;
 }
 pre .title,
 pre .css .hexcolor {
-  color: #70c0b1;
+  color: #6cc;
 }
 pre .function,
 pre .python .decorator,
@@ -638,11 +638,11 @@ pre .ruby .title .keyword,
 pre .perl .sub,
 pre .javascript .title,
 pre .coffeescript .title {
-  color: #7aa6da;
+  color: #69c;
 }
 pre .keyword,
 pre .javascript .function {
-  color: #c397d8;
+  color: #c9c;
 }
 .full-image.full-image.full-image.full-image {
   border: none;
@@ -1842,7 +1842,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #e0cb61;
+  background: #ff54ff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3435,4 +3435,183 @@ code {
 .post-jinrishici .jinrishici-container #jinrishici-sentence {
   font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif !important;
   border-bottom: none !important;
+}
+.darkmode--activated {
+  background: #1a1a1a !important; /* 深灰色背景 */
+}
+.darkmode--activated .main-inner {
+  background: rgba(40,44,52,0.3); /* 略微透明的深灰色 */
+}
+.darkmode--activated .post-block {
+  opacity: 1;
+  background: #252525; /* 深灰色背景 */
+  color: #f0f0f0; /* 浅灰色文字 */
+}
+.darkmode--activated .footer {
+  color: #d0d0d0; /* 浅灰色文字 */
+}
+.darkmode--activated .post-nav-item a {
+  color: #d0d0d0; /* 浅灰色文字 */
+}
+.darkmode--activated .post-nav-item a:hover {
+  color: #fc6; /* 强调色：柔和的金色 */
+}
+.darkmode--activated .main-menu {
+  background: #252525; /* 深灰色背景 */
+  border-radius: 0 0 $myradius $myradius; /*设置圆角*/
+}
+.darkmode--activated .menu-item {
+  background: #252525; /* 设置背景 */
+}
+.darkmode--activated .menu-item a {
+  color: #d0d0d0; /* 添加文字颜色 */
+}
+.darkmode--activated .menu-item a:hover {
+  border-radius: $myradius;
+  background: #333; /* 稍亮的深灰色 */
+  color: #fff; /* 白色文字 */
+}
+.darkmode--activated a.menu-item-active {
+  border-radius: $myradius;
+  background: #333; /* 稍亮的深灰色 */
+  color: #fff; /* 添加文字颜色 */
+}
+.darkmode--activated .site-brand-container {
+  background: url("https://cdn.jsdelivr.net/gh/WillCAI2020/cdn/images/header-bg1.jpg");
+  background-repeat: repeat;
+  background-position: 70% 20%;
+  background-size: cover;
+}
+.darkmode--activated .sidebar-inner {
+  background: #252525; /* 深灰色背景 */
+}
+.darkmode--activated .site-state-item a:hover {
+  color: #fc6; /* 强调色：柔和的金色 */
+}
+.darkmode--activated .links-of-author-item a:hover {
+  background: #333; /* 稍亮的深灰色 */
+  color: #fc6; /* 强调色：柔和的金色 */
+}
+.darkmode--activated .sub-menu {
+  background: #252525; /* 深灰色背景 */
+}
+.darkmode--activated .search-header,
+.darkmode--activated .search-result-container {
+  background: #252525 !important; /* 深灰色背景 */
+}
+.darkmode--activated .search-input,
+.darkmode--activated .search-result-container,
+.darkmode--activated .search-result-list a {
+  color: #f0f0f0; /* 浅灰色文字 */
+}
+.darkmode--activated .search-result-list a {
+  border-bottom: 1px solid #f0f0f0; /* 浅灰色下划线 */
+}
+.darkmode--activated .search-result-list a:hover {
+  color: #fc6; /* 强调色：柔和的金色 */
+  border-bottom: 1px solid #fc6; /* 强调色下划线 */
+}
+.darkmode--activated #waifu-tips {
+  color: #f0f0f0; /* 浅灰色文字 */
+}
+.darkmode--activated #waifu-tips span {
+  color: #c9f; /* 强调色：淡紫色 */
+}
+.darkmode--activated .post-meta-item a {
+  color: #8ab4f8; /* 浅蓝色 */
+  border-bottom: none;
+  border-bottom: 1px solid #8ab4f8; /* 浅蓝色下划线 */
+}
+.darkmode--activated .post-meta-item a:hover {
+  color: #fc6; /* 强调色：柔和的金色 */
+  border-bottom: none;
+  border-bottom: 1px solid #fc6; /* 强调色下划线 */
+}
+.darkmode--activated .comments {
+  background: #252525; /* 深灰色背景 */
+}
+.darkmode--activated a.vlogin-btn,
+.darkmode--activated .vnick,
+.darkmode--activated .vmail,
+.darkmode--activated .vlink,
+.darkmode--activated .veditor,
+.darkmode--activated .vinput p,
+.darkmode--activated .vinput h1,
+.darkmode--activated .vinput h2,
+.darkmode--activated .vinput h3 {
+  color: #d0d0d0 !important;
+}
+.darkmode--activated a.vlogin-btn:hover {
+  color: #fc6 !important; /* 强调色：柔和的金色 */
+}
+.darkmode--activated li.menu-item.menu-item-home {
+  background: #252525 !important; /* 设置背景，提高优先级 */
+}
+.darkmode--activated li.menu-item.menu-item-active {
+  background: #333 !important; /* 设置选中标签背景，提高优先级 */
+}
+.darkmode--activated .menu .menu-item:hover > a,
+.darkmode--activated .menu-item-active > a {
+  background: #252525 !important; /* 设置背景，提高优先级 */
+}
+.darkmode--activated .post-block .post-copyright {
+  background: #252525; /* 设置背景色 */
+  color: #d0d0d0; /* 设置字体颜色 */
+}
+.darkmode--activated .post-block .post-copyright a {
+  color: #8ab4f8; /* 设置链接颜色 */
+}
+.darkmode--activated .post-block .post-copyright a:hover {
+  color: #fc6; /* 设置链接悬停颜色 */
+}
+.darkmode--activated .post-body h2 {
+  background-color: #5f9ea0;
+  border-color: #555; /* 可选：调整边框颜色 */
+}
+.darkmode--activated .post-body a {
+  color: #8fbc8f; /* 设置链接颜色 */
+}
+.darkmode--activated .post-body a:hover {
+  color: #8fbc8f; /* 设置链接悬停颜色 */
+}
+.darkmode--activated .toc a:hover,
+.darkmode--activated .table-of-contents a:hover {
+  color: #fc6; /* 设置悬停颜色为柔和的金色 */
+  background: transparent; /* 设置悬停背景透明 */
+}
+.darkmode--activated .post-toc ol a {
+  color: #d0d0d0; /* 设置链接颜色为浅灰色 */
+  border-bottom-color: #555; /* 设置下划线颜色 */
+}
+.darkmode--activated .post-toc ol a:hover {
+  color: #fc6; /* 设置悬停颜色为柔和的金色 */
+  background: transparent; /* 设置悬停背景透明 */
+}
+.darkmode--activated .btn {
+  background: #555; /* 设置背景色 */
+  border-color: #555; /* 设置边框颜色 */
+  color: #a9a9a9; /* 设置文字颜色 */
+}
+.darkmode--activated .btn:hover {
+  background: #777; /* 设置悬停背景色 */
+  border-color: #777; /* 设置悬停边框颜色 */
+}
+.darkmode--activated .sidebar a {
+  color: #d0d0d0; /* 设置链接颜色为浅灰色 */
+}
+.darkmode--activated .sidebar a:hover {
+  color: #fc6; /* 设置悬停颜色为柔和的金色 */
+}
+.darkmode--activated .posts-expand .post-title-link {
+  color: #d0d0d0; /* 设置链接颜色为浅灰色 */
+}
+.darkmode--activated .posts-expand .post-title-link:hover {
+  color: #fc6; /* 设置悬停颜色为柔和的金色 */
+}
+.darkmode--activated a {
+  color: #d0d0d0; /* 设置链接颜色为浅灰色 */
+  border-bottom-color: #555; /* 设置下划线颜色 */
+}
+.darkmode--activated a:hover {
+  color: #fc6; /* 设置悬停颜色为柔和的金色 */
 }

@@ -6,7 +6,7 @@
   <link href="https://dyyoungg.github.io/atom.xml" rel="self"/>
   
   <link href="https://dyyoungg.github.io/"/>
-  <updated>2025-01-01T14:37:01.830Z</updated>
+  <updated>2025-01-07T15:25:03.084Z</updated>
   <id>https://dyyoungg.github.io/</id>
   
   <author>
@@ -17,11 +17,32 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>如何优雅的让LLM成为洗数据工具人</title>
+    <link href="https://dyyoungg.github.io/posts/2274603809/"/>
+    <id>https://dyyoungg.github.io/posts/2274603809/</id>
+    <published>2025-01-03T08:59:36.000Z</published>
+    <updated>2025-01-07T15:25:03.084Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;相信实际工作中，使用LLM为业务打工应该是大模型时代每个算法工程师都经历过的。作为算法工程师，日常有一部分工作就是洗数据，但看起来简单的需求，实际上也有一些工程问题需要考虑。这篇文章将结合本人日常清洗各种语料的经验，谈一谈如何构建一个高效的处理流程。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="数据处理" scheme="https://dyyoungg.github.io/categories/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/"/>
+    
+    
+    <category term="LLM推理框架" scheme="https://dyyoungg.github.io/tags/LLM%E6%8E%A8%E7%90%86%E6%A1%86%E6%9E%B6/"/>
+    
+    <category term="asyncio异步" scheme="https://dyyoungg.github.io/tags/asyncio%E5%BC%82%E6%AD%A5/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Hexo + Next 博客配置记录</title>
     <link href="https://dyyoungg.github.io/posts/1962388397/"/>
     <id>https://dyyoungg.github.io/posts/1962388397/</id>
     <published>2024-12-26T04:49:50.000Z</published>
-    <updated>2025-01-01T14:37:01.830Z</updated>
+    <updated>2025-01-05T16:36:23.320Z</updated>
     
     
     <summary type="html">&lt;p&gt;很久之前就想写博客，但由于懒加嫌麻烦一直搁置。但逐渐发现学习的东西不断变多，一直记在脑子也难免遗忘，因此还是决定开个博客，一是作为自己平时学习积累的一个记录，梳理平时学习的思路，二来可以将个人浅薄的见解输出，帮助到有需要的人吧。&lt;/p&gt;
