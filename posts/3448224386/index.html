@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Hexo博客搭建,Next主题优化," />
+  <meta name="keywords" content="视频理解,Vision encoder,Token 压缩,多模态结构设计," />
 
 
 
@@ -86,19 +86,35 @@
 
 
 
-<meta name="description" content="很久之前就想写博客，但由于懒加嫌麻烦一直搁置。但逐渐发现学习的东西不断变多，一直记在脑子也难免遗忘，因此还是决定开个博客，一是作为自己平时学习积累的一个记录，梳理平时学习的思路，二来可以将个人浅薄的见解输出，帮助到有需要的人吧。 第一篇博客，当然是从环境配置开始。简单上网搜一下，就知道Hexo + Next + Github + Vscode 应该是简易博客的标配了，Hexo 是基于 Node.j">
+<meta name="description" content="这篇文章主要分享一篇视频理解领域的多模态大模型paper，来自Meta genAI和斯坦福的工作，Apollo: An Exploration of Video Understanding in Large Multimodal Models，这篇文章比较全面的探索了多模态视频理解模型中的关键设计和训练策略，非常具有参考和借鉴意义。我也将结合自己的实际训练经验，谈谈多模态大模型训练和结构上的一些认">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo + Next 博客配置记录">
-<meta property="og:url" content="https://dyyoungg.github.io/posts/1962388397/index.html">
+<meta property="og:title" content="从Apoll看视频理解模型的设计">
+<meta property="og:url" content="https://dyyoungg.github.io/posts/3448224386/index.html">
 <meta property="og:site_name" content="算法修仙指北：入门到放弃">
-<meta property="og:description" content="很久之前就想写博客，但由于懒加嫌麻烦一直搁置。但逐渐发现学习的东西不断变多，一直记在脑子也难免遗忘，因此还是决定开个博客，一是作为自己平时学习积累的一个记录，梳理平时学习的思路，二来可以将个人浅薄的见解输出，帮助到有需要的人吧。 第一篇博客，当然是从环境配置开始。简单上网搜一下，就知道Hexo + Next + Github + Vscode 应该是简易博客的标配了，Hexo 是基于 Node.j">
+<meta property="og:description" content="这篇文章主要分享一篇视频理解领域的多模态大模型paper，来自Meta genAI和斯坦福的工作，Apollo: An Exploration of Video Understanding in Large Multimodal Models，这篇文章比较全面的探索了多模态视频理解模型中的关键设计和训练策略，非常具有参考和借鉴意义。我也将结合自己的实际训练经验，谈谈多模态大模型训练和结构上的一些认">
 <meta property="og:locale">
-<meta property="article:published_time" content="2024-12-26T04:49:50.000Z">
-<meta property="article:modified_time" content="2025-01-05T16:36:23.320Z">
+<meta property="og:image" content="https://dyyoungg.github.io/posts/3448224386/apoll_intro.png">
+<meta property="og:image" content="https://dyyoungg.github.io/posts/3448224386/benchmark.png">
+<meta property="og:image" content="https://dyyoungg.github.io/posts/3448224386/apollbench.png">
+<meta property="og:image" content="https://dyyoungg.github.io/posts/3448224386/scaling_consistence.png">
+<meta property="og:image" content="https://dyyoungg.github.io/posts/3448224386/video_llava.png">
+<meta property="og:image" content="https://dyyoungg.github.io/posts/3448224386/videoencoders.png">
+<meta property="og:image" content="https://dyyoungg.github.io/posts/3448224386/perceiver.png">
+<meta property="og:image" content="https://dyyoungg.github.io/posts/3448224386/projector_result.png">
+<meta property="og:image" content="https://dyyoungg.github.io/posts/3448224386/sample_fps.png">
+<meta property="og:image" content="https://dyyoungg.github.io/posts/3448224386/train_strategy.png">
+<meta property="og:image" content="https://dyyoungg.github.io/posts/3448224386/data_ablation.png">
+<meta property="og:image" content="https://dyyoungg.github.io/posts/3448224386/data_compose.png">
+<meta property="og:image" content="https://dyyoungg.github.io/posts/3448224386/capability.png">
+<meta property="article:published_time" content="2025-01-08T03:28:07.000Z">
+<meta property="article:modified_time" content="2025-01-12T17:00:03.313Z">
 <meta property="article:author" content="dyyoung">
-<meta property="article:tag" content="Hexo博客搭建">
-<meta property="article:tag" content="Next主题优化">
+<meta property="article:tag" content="视频理解">
+<meta property="article:tag" content="Vision encoder">
+<meta property="article:tag" content="Token 压缩">
+<meta property="article:tag" content="多模态结构设计">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dyyoungg.github.io/posts/3448224386/apoll_intro.png">
 
 
 
@@ -129,13 +145,13 @@
 
 
 
-  <link rel="canonical" href="https://dyyoungg.github.io/posts/1962388397/"/>
+  <link rel="canonical" href="https://dyyoungg.github.io/posts/3448224386/"/>
 
 
 
 
 
-  <title>Hexo + Next 博客配置记录 | 算法修仙指北：入门到放弃</title>
+  <title>从Apoll看视频理解模型的设计 | 算法修仙指北：入门到放弃</title>
   
 
 
@@ -310,7 +326,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://dyyoungg.github.io/posts/1962388397/">
+    <link itemprop="mainEntityOfPage" href="https://dyyoungg.github.io/posts/3448224386/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="dyyoung">
@@ -327,7 +343,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Hexo + Next 博客配置记录</h2>
+          <h2 class="post-title" itemprop="name headline">从Apoll看视频理解模型的设计</h2>
         
 
         <div class="post-meta">
@@ -339,8 +355,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-12-26T12:49:50+08:00">
-                2024-12-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-01-08T11:28:07+08:00">
+                2025-01-08
               </time>
             
 
@@ -362,8 +378,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">Hexo</span>
+                  <a href="/categories/%E5%A4%9A%E6%A8%A1%E6%80%81/" itemprop="url" rel="index">
+                    <span itemprop="name">多模态</span>
                   </a>
                 </span>
 
@@ -401,7 +417,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2.1k
+                  4.4k
                 </span>
               
 
@@ -417,7 +433,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  9
+                  15
                 </span>
               
             </div>
@@ -473,21 +489,133 @@
       
 
       
-        <p>很久之前就想写博客，但由于懒加嫌麻烦一直搁置。但逐渐发现学习的东西不断变多，一直记在脑子也难免遗忘，因此还是决定开个博客，一是作为自己平时学习积累的一个记录，梳理平时学习的思路，二来可以将个人浅薄的见解输出，帮助到有需要的人吧。</p>
-<p>第一篇博客，当然是从环境配置开始。简单上网搜一下，就知道Hexo + Next + Github + Vscode 应该是简易博客的标配了，Hexo 是基于 Node.js 的静态博客生成器，生成静态页面的速度非常快， Next主题提供多种样式（Muse、Mist、Pisces、Gemini），GitHub Pages 提供免费的静态网站托管服务，Vscode 作为文本编辑器，结合markdown插件，在本地写作时可以Preview博客。对个人博客而言，上述组合应该是绰绰有余啦。</p>
+        <p>这篇文章主要分享一篇视频理解领域的多模态大模型paper，来自Meta genAI和斯坦福的工作，<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2412.10360">Apollo: An Exploration of Video Understanding in Large Multimodal Models</a>，这篇文章比较全面的探索了多模态视频理解模型中的关键设计和训练策略，非常具有参考和借鉴意义。我也将结合自己的实际训练经验，谈谈多模态大模型训练和结构上的一些认知。</p>
 <span id="more"></span>
-<h2 id="前置工作"><a href="#前置工作" class="headerlink" title="前置工作"></a>前置工作</h2><h3 id="gitnodejs安装配置"><a href="#Git-Node-js安装配置" class="headerlink" title="Git/Node.js安装配置"></a>Git/Node.js安装配置</h3><p>需要提前安装 Node.js / Git，稍微ChatGPT一下就好啦。Git 需要生成的id_rsa.pub 添加到Github SSH key中。然后测试 SSH连接是否成功<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure></p>
-<h3 id="hexo环境安装"><a href="#Hexo环境安装" class="headerlink" title="Hexo环境安装"></a>Hexo环境安装</h3><p>在安装完 Node.js 和 Git 后，可以通过 npm 安装 Hexo 命令行工具。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure><br>此时就可以新建一个blog文件夹了，然后安装相关依赖<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">1.</span> hexo init blog</span><br><span class="line"><span class="bullet">2.</span> 进入上条命令所创建的 blog 文件夹中：cd blog</span><br><span class="line"><span class="bullet">3.</span> 安装相关依赖：npm install</span><br><span class="line"><span class="bullet">4.</span> 启动 Hexo 服务：hexo server(或直接 hexo s)</span><br><span class="line"><span class="bullet">5.</span> npm i hexo-renderer-swig (hexo 在5.0之后把 swig 删除了，需要自己手动安装, 不然渲染出错)</span><br><span class="line"><span class="bullet">6.</span> 访问默认界面，测试是否安装成功：浏览器访问localhost:4000</span><br></pre></td></tr></table></figure></p>
-<h3 id="next主题安装"><a href="#Next主题安装" class="headerlink" title="Next主题安装"></a>Next主题安装</h3><p>接下来配置<a target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">Next</a>主题，这是Hexo的一个主题插件，类似的还有<a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a>，<a target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-icarus">Icarus</a>，<a target="_blank" rel="noopener" href="https://github.com/litten/hexo-theme-yilia">Yilia</a>等等。经过上一步的配置，现在blog文件夹下将会有站点配置文件 _config.yml, 这是Hexo 博客的核心配置文件，用于定义博客的全局设置和功能选项。通过修改 _config.yml，可以自定义博客的外观、功能、部署方式等。</p>
-<p>首先进入上一步创建的 blog 文件夹中，将 Next 主题相关文件从 github 克隆到 themes 文件夹中<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure><br>然后修改 _config.yml中的主题参数<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">next</span></span><br></pre></td></tr></table></figure><br>然后按照Step2 验证一下 localhost:4000的页面渲染效果</p>
-<h3 id="github部署"><a href="#Github部署" class="headerlink" title="Github部署"></a>Github部署</h3><p>首先去github 新建一个个人仓库，并设置为公开，仓库名格式为 username.github.io， username就是Github username</p>
-<p>在 站点配置文件 _config.yml 找到deploy部分，配置如下<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">&#x27;git&#x27;</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:username/username.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">main</span></span><br></pre></td></tr></table></figure><br>在blog项目目录下安装 deployer-git插件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure><br>最后生成静态博客并部署到github，过十几分钟就能访问 <a target="_blank" rel="noopener" href="https://username.github.io">https://username.github.io</a> 网址看到渲染的页面了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate -d</span><br></pre></td></tr></table></figure></p>
-<h2 id="next主题优化"><a href="#Next主题优化" class="headerlink" title="Next主题优化"></a>Next主题优化</h2><p>经过上述Next主题安装，在 /themes/next 目录下将会有 主题配置文件 _config.yml。大部分功能都能通过修改config的参数实现和安装相应包实现，具体的一些设置可以参考这篇博文：<a target="_blank" rel="noopener" href="https://www.dragonstyle.win/3358042383.html">https://www.dragonstyle.win/3358042383.html</a> ，按照自己的需求去修改。以下是我觉得比较重要，影响写作体验和效果的一些小tips。</p>
-<h3 id="公式渲染"><a href="#公式渲染" class="headerlink" title="公式渲染"></a>公式渲染</h3><p>写文章难免会敲latex公式，一般使用MathJax，一个用于在网页中渲染数学公式的JavaScripts库。Hexo默认使用Marked进行渲染，但是却不能渲染mathjax，需要换成 Kramed.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">npm install hexo-renderer-kramed --save</span><br></pre></td></tr></table></figure><br>然后卸载原来的hexo-math， 安装hexo-renderer-mathjax包<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-math --save</span><br><span class="line">npm install hexo-renderer-mathjax --save</span><br></pre></td></tr></table></figure><br>最后修改 主题配置文件中的mathjax 选项，Next版本5.1.4中的配置是这样的<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mathjax:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">per_page:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">cdn:</span> <span class="string">//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML</span></span><br></pre></td></tr></table></figure><br>最后，为了解决多行公式渲染的问题（<a target="_blank" rel="noopener" href="https://github.com/blinkfox/hexo-theme-matery/issues/119">原issue</a>）。在博客根目录下，找到node_modules/kramed/lib/rules/inline.js文件，在inline变量中做出如下修改（以下是修改好后的代码):<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">var inline = &#123;</span><br><span class="line">  // escape: /^\\([\\`*&#123;&#125;\[\]()#$+\-.!_&gt;])/, 第 11 行, 将其修改为</span><br><span class="line">  escape: /^\\([`*\[\]()#$+\-.!_&gt;])/,</span><br><span class="line">  autolink: /^&lt;([^ &gt;]+(@|:\/)[^ &gt;]+)&gt;/,</span><br><span class="line">  url: noop,</span><br><span class="line">  html: /^&lt;!--[\s\S]*?--&gt;|^&lt;(\w+(?!:\/|[^\w\s@]*@)\b)*?(?:&quot;[^&quot;]*&quot;|&#x27;[^&#x27;]*&#x27;|[^&#x27;&quot;&gt;])*?&gt;([\s\S]*?)?&lt;\/\1&gt;|^&lt;(\w+(?!:\/|[^\w\s@]*@)\b)(?:&quot;[^&quot;]*&quot;|&#x27;[^&#x27;]*&#x27;|[^&#x27;&quot;&gt;])*?&gt;/,</span><br><span class="line">  link: /^!?\[(inside)\]\(href\)/,</span><br><span class="line">  reflink: /^!?\[(inside)\]\s*\[([^\]]*)\]/,</span><br><span class="line">  nolink: /^!?\[((?:\[[^\]]*\]|[^\[\]])*)\]/,</span><br><span class="line">  reffn: /^!?\[\^(inside)\]/,</span><br><span class="line">  strong: /^__([\s\S]+?)__(?!_)|^\*\*([\s\S]+?)\*\*(?!\*)/,</span><br><span class="line">  // em: /^\b_((?:__|[\s\S])+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/, 第 20 行，将其修改为 </span><br><span class="line">  em: /^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,</span><br><span class="line">  code: /^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/,</span><br><span class="line">  br: /^ &#123;2,&#125;\n(?!\s*$)/,</span><br><span class="line">  del: noop,</span><br><span class="line">  text: /^[\s\S]+?(?=[\\&lt;!\[_*`$]| &#123;2,&#125;\n|$)/,</span><br><span class="line">  math: /^\$\$\s*([\s\S]*?[^\$])\s*\$\$(?!\$)/,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><br>最后别忘了 hexo clean &amp; hexo g，然后使用 hexo s看效果。</p>
-<h3 id="本地markdown-preview图像路径问题"><a href="#本地Markdown-Preview图像路径问题" class="headerlink" title="本地Markdown Preview图像路径问题"></a>本地Markdown Preview图像路径问题</h3><p>使用vscode作为文本编辑器在本地写markdown博客时，需要渲染观察效果，而普通的preview是不会渲染latext公式和图表等信息的，这时候可以换成 Markdown Preview Enhanced 插件。</p>
-<p>安装插件后，打开插件的settings， 需要修改默认的 ImageFolder Path 以支持插件找到图像，原本默认的是 /asset（插件安装目录下）， 需要修改到 source/_posts 文件夹， 填写绝对路径即可，比如<br><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">D:\blog\source\_posts</span><br></pre></td></tr></table></figure><br>为了便于博客图像管理，可以将站点配置文件中将 <em>post_asset_folder</em> 设置为 true，这样的话当你使用 hexo new title 创建一篇新文章时，Hexo 会自动在 source/_posts 目录下创建一个与文章同名的文件夹，下面可以存放不同博客的图像资源。<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">source/_posts/</span><br><span class="line">├── <span class="keyword">my</span>-post.md</span><br><span class="line">└── <span class="keyword">my</span>-post/</span><br></pre></td></tr></table></figure><br>而默认情况下，Hexo 的 post_asset_folder 功能只会为每篇文章创建一个资源文件夹，但并不会自动处理图片路径。如果你直接在 Markdown 中引用图片，生成的 HTML 文件中的图片路径可能会出错。这时候需要安装 hexo-asset-image 插件。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-asset-image --save</span><br></pre></td></tr></table></figure><br>然后在写博客时 引用图像就可以使用如下形式, 这样既能 在本地和网页中就都能找到正确的图像路径并且进行渲染了。<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">![<span class="string">图片描述</span>](<span class="link">./my-post/image.png</span>)</span><br><span class="line"><span class="emphasis">*<span class="language-xml"><span class="tag">&lt;<span class="name">center</span>&gt;</span></span>图 1: xxx <span class="language-xml"><span class="tag">&lt;/<span class="name">center</span>&gt;</span></span>*</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="评论系统"><a href="#评论系统" class="headerlink" title="评论系统"></a>评论系统</h3><p>看网上使用各种的都有，看了一眼主题配置文件和源码， 有这么些是 Next 5.1.4 版本支持的。源码在 /next/layout/_partials/comments.swig 文件中，如下所示<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if page.comments %&#125;</span><br><span class="line"></span><br><span class="line">  &#123;% if (theme.duoshuo and theme.duoshuo.shortname) or theme.duoshuo_shortname %&#125;</span><br><span class="line">    &lt;div class=&quot;comments&quot; id=&quot;comments&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;ds-thread&quot; data-thread-key=&quot;&#123;&#123; page.path &#125;&#125;&quot;</span><br><span class="line">           data-title=&quot;&#123;&#123; page.title &#125;&#125;&quot; data-url=&quot;&#123;&#123; page.permalink &#125;&#125;&quot;&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &#123;% elseif theme.facebook_sdk.enable and theme.facebook_comments_plugin.enable %&#125;</span><br><span class="line">    &lt;div class=&quot;comments&quot; id=&quot;comments&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;fb-comments&quot;</span><br><span class="line">           data-href=&quot;&#123;&#123; page.permalink &#125;&#125;&quot;</span><br><span class="line">           data-numposts=&quot;&#123;&#123; theme.facebook_comments_plugin.num_of_posts &#125;&#125;&quot;</span><br><span class="line">           data-width=&quot;&#123;&#123; theme.facebook_comments_plugin.width &#125;&#125;&quot;</span><br><span class="line">           data-colorscheme=&quot;&#123;&#123; theme.facebook_comments_plugin.scheme &#125;&#125;&quot;&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  ......</span><br><span class="line"></span><br><span class="line">  &#123;% endif %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% endif %&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><br>试了一下推荐比较多的Gitment，发现老是登入出问题，无法评论，而且看网上说需要每次手动初始化评论？Valine 也是类似的需要注册申请，填写 appid 和appkey，就没有再试了，gitalk配置好了又渲染不出来，很奇怪。最后看到了Utterances， 也是类似Gitment使用github issue存储评论，看安装比较简单，于是安装了一下，并且能生效。</p>
-<p>首先点击这个网址安装Utterances <a target="_blank" rel="noopener" href="https://github.com/apps/utterances">Install Utterances App</a>，一路默认就好。然后修改主题配置，添加 Utterances 相关的配置项，<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">utterances:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">dyyoungg/dyyoungg.github.io</span> <span class="comment"># Github repository owner and name</span></span><br><span class="line">  <span class="comment"># Available values: pathname | url | title | og:title</span></span><br><span class="line">  <span class="attr">issue_term:</span> <span class="string">title</span></span><br><span class="line">  <span class="attr">label:</span> <span class="string">comments</span> </span><br><span class="line">  <span class="comment"># Available values: github-light | github-dark | preferred-color-scheme | github-dark-orange | icy-dark | dark-blue | photon-dark | boxy-light</span></span><br><span class="line">  <span class="attr">theme:</span> <span class="string">github-light</span></span><br></pre></td></tr></table></figure><br>并在 /next/layout/_partials/comments.swig 文件中添加以下代码，就是多补充一个elif逻辑。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;% elseif theme.utterances.enable %&#125;</span><br><span class="line">    &lt;div class=&quot;comments&quot; id=&quot;comments&quot;&gt;</span><br><span class="line">      &lt;script src=&quot;https://utteranc.es/client.js&quot;</span><br><span class="line">              repo=&quot;&#123;&#123; theme.utterances.repo &#125;&#125;&quot;</span><br><span class="line">              issue-term=&quot;&#123;&#123; theme.utterances.issue_term &#125;&#125;&quot;</span><br><span class="line">              label=&quot;&#123;&#123; theme.utterances.label &#125;&#125;&quot;</span><br><span class="line">              theme=&quot;&#123;&#123; theme.utterances.theme &#125;&#125;&quot;</span><br><span class="line">              crossorigin=&quot;anonymous&quot;</span><br><span class="line">              async&gt;</span><br><span class="line">      &lt;/script&gt;</span><br><span class="line">    &lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="前言">前言</h2>
+<p><img src="/posts/3448224386/apoll_intro.png" alt="图片"><br>
+<em><center>图1. Introduction</center></em></p>
+<p>这篇文章还是聚焦于vision encoder + Projector + LLM这种级联式的多模态模型，主要实验的LLM为Qwen2系列的大语言模型（不用自家的llama？手动狗头）。插句题外话，qwen的模型确实很不错，刷榜表现和实际使用体验下来差别没有那么大，不像某些模型，就不点名了，我们在平常的实验也是主要使用的qwen系列模型。回到正题，Apoll这篇文章主要探索了以下几个关键问题：</p>
+<ol>
+<li>模型结构
+<ul>
+<li>vision encoder的组合</li>
+<li>vision projector的选择</li>
+</ul>
+</li>
+<li>训练设置
+<ul>
+<li>视频应该如何被采样</li>
+<li>vision encoder在训练不同阶段的策略</li>
+<li>纯文本/图像/视频数据的混合比例</li>
+</ul>
+</li>
+<li>模型评测
+<ul>
+<li>评测数据集构建</li>
+</ul>
+</li>
+</ol>
+<h2 id="评测数据构建">评测数据构建</h2>
+<p><img src="/posts/3448224386/benchmark.png" alt="图片"><br>
+<em><center>图2. 模型表现在不同视频测试数据集的相关性矩阵</center></em></p>
+<p>既然要探索结构和训练设置上的效果，那就需要有一个评价效果的测试集，从而能够全面的反映模型在视频理解各个方面的能力。文章首先分析了模型表现在不同视频测试集，如Video-MME, TempCompass, LongVideoBench, MLVU, NExTQA, 和PerceptionTest之间的相关性，如上图2红色框所示，可以看到不同数据集间的评估是存在冗余的。文章还评估了不同问题类型和视频时长对模型表现的影响，结果发现无论是视频时长还是问题类型的变化，模型的表现都表现出高度相关性，这意味着它们对评估多样性或模型能力区分的影响较小。</p>
+<p>于是文章设计了一个更高效且有效的评测基准——ApolloBench，主要使用多选题，移除那些可以通过文本或图像输入轻松回答的题目（正确率超过50%），剔除不需要视频感知的问题。将问题划分为五大类与时间感知相关的类别：</p>
+<ul>
+<li>Temporal OCR（时间序列文字识别）</li>
+<li>Egocentric（第一视角的视频分析）</li>
+<li>Spatial（空间感知）</li>
+<li>Perception（感知能力）</li>
+<li>Reasoning（推理能力）</li>
+</ul>
+<p>根据模型的区分能力（熵）筛选出表现最佳的400道题目，并人工验证每个题目的正确性。下面这张图用来验证 ApolloBench 在评估视频感知能力上的有效性。如下图红色框线内的浅蓝色和黄色部分。</p>
+<p><img src="/posts/3448224386/apollbench.png" alt="图片"><br>
+<em><center>图3. ApollBench </center></em></p>
+<p>浅蓝色部分表示视频与文本输入之间的性能差距。如果浅蓝色区域较大，表明视频感知能力显著提升了性能。如果浅蓝色区域较小，则表明视频输入的优势较弱，模型可能更多依赖文本理解。</p>
+<p>黄色部分表示视频与单帧图像输入之间的性能差距，黄色区域较大，表明视频中时间信息（动态特征）对任务有重要贡献，黄色区域较小，表明静态图像输入已包含大部分关键信息，时间信息作用较小。</p>
+<p>可以看到这两个差距在所有测试集中都是最大的，说明ApolloBench的设计更注重视频感知能力，区分模型性能更明显。</p>
+<h2 id="模型结构">模型结构</h2>
+<p>在探索模型结构设计之前，这篇文章提出了一个scaling consistency的概念，即通过较小模型和数据集来指导更大规模模型的结构设计，从而节省资源和提高效率。文章比较了21 种模型变化（包括架构、视频采样方法、训练策略、数据组合等设计方面），使用四种不同规模的LLM：Qwen2-0.5B、Qwen2-1.5B、Qwen1.5-4B、Qwen2-7B, 总计训练了 84 个模型，然后计算这些模型之间的性能相关性。可以看到，2~4B和7B模型的性能相关性是最高的，R2大于0.9，因此可以通过在小模型上进行设计实验，然后迁移到更大模型上。</p>
+<p>这应该是个常规操作了目前，尤其是在更大的模型上，使用小模型去验证数据集质量、调整数据集比例或者结构设计。</p>
+<p><img src="/posts/3448224386/scaling_consistence.png" alt="图片"><br>
+<em><center>图4. Scaling Consistency</center></em></p>
+<h3 id="vision-encoder">Vision Encoder</h3>
+<p>目前图像多模态大模型基本都是采用CLIP这种经过语义对齐过的vision encoder，而在视频理解中，大家延续了图像理解的做法，将视频采样成多帧图像，然后每张图像encode信息顺序排列作为视频特征，而视频的理解还是由LLM去图像信息中抽取相应的语义特征，虽然这种方式缺少了时间维度的信息，但由于图像encoder产生的特征还是比较高质量的，信息密度更高，加上LLM本身有能力强大的信息抽取和理解能力，因此在一些时序的视频信息理解benchmark上也能有不错的性能。文中也提到早期工作也有使用video encoder做视频理解的，比如 <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2311.10122">Video-llava</a>， <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2305.06355">Video-chat</a>，如下图所示。<br>
+<img src="/posts/3448224386/video_llava.png" alt="图片"><br>
+<em><center>图5. 早期视频理解工作的一些架构</center></em></p>
+<p>但后面的工作基本上还是转向了图像encoder。我们早期也试过internvideo这样的视频encoder，但训练出来效果并不比clip好，很多指标都差很多，尽管video encoder看起来引入了连续帧的一些信息，但信息的密度变低了，并且粒度肯定是不如vision encoder的。而大家后面都转向用图像encoder做视频理解，其中主要的一个原因就是vision encoder的特征信息量比目前的video encoder大，做一些需要细粒度理解的任务还是会更强一些。另外采用图像encoder，也能很方便的统一视频理解，除此之外，图像的高质量数据确实要比视频多很多，这也是为什么到现在也没有一个video encoder能够替代掉vision encoder做视频理解。</p>
+<p>而这篇文章探索了多种图像和视频编码器及其组合，评估这些组合对最终模型性能的影响。</p>
+<ul>
+<li>视频encoder：InternVideo2(4 frames)、LanguageBind-Video v1.5(8 frames)、VideoMAE(16 frames)、V-JEPA(16 frames)。</li>
+<li>图像encoder：SigLIP-SO400M、LanguageBind-Image、DINOv2。</li>
+</ul>
+<p><img src="/posts/3448224386/videoencoders.png" alt="图片"><br>
+<em><center>图6. Video encoder 和 Image encoder </center></em></p>
+<p>从图6也是可以明显的看出来，单个encoder的情况下图像encoder SigLIP是最好的，而组合的情况下，InternVideo2 + SigLIP-SO400M 的表现最好，相比单一编码器在 ApolloBench 上提升了约 7%，这里的特征融合是将视频特征沿着通道维度拼接到图像特征后面。这个实验也基本验证了video encoder确实可以带来时序理解上的提升。</p>
+<p>这里额外多说一点，我个人不是很喜欢这种fusion的方法，我觉得这只能算比较tricky的偷懒做法，多模态图像理解也有很多工作去探索多种vision encoder的特征融合，有些融合5、6个encoder，但这样真正带来的收益有多少呢？或者说带来的收益真的值得用这么多计算资源去换吗？这些融合工作的出发点都是一样，缺啥补啥，觉得CLIP的特征属于比较高层的语义信息，缺少low level的feature，所以对一些像OCR这样需要非常细粒度的任务不太友好，于是加上一些OCR专用的encoder，又或者对grounding任务缺少目标级别的细粒度理解，于是加上SAM等等。像deepseek-vl 在第一个版本的时候还是 SigLIP + SAM的encoder fusion，第二个版本就直接去掉了SAM，换成了MOE的LLM和动态分块切图（internvl2系列也是），这里面其实说明了两点，一是LLM增强的收益肯定是大于特征增强的，二是对于像OCR等需要细粒度的任务，图片的分辨率远比特征重要，在有对应的数据情况下，完全可以通过训练策略去改善CLIP或SigLIP的特征信息，这才是一个更优雅的解法。</p>
+<h3 id="projector">Projector</h3>
+<p>对于视频理解模型，Projector显得尤为重要，因为这直接决定了LLM 能处理多长的视频。以llava这样的多模态模型为例，如果输入为336*336， patchfy之后就是 （336//14）**2=576个token，当LLM上下文长度为4096时，也就处理不到10张图，按采样fps=1来算，也就处理不到10s，因此在视频理解模型中，降token是必须要考虑的一件事。<br>
+由于目前的视频理解模型其实主要还是用的图像encoder，包括Apoll这篇文章，尽管使用了视频encoder，但特征融合是在通道维度和图像拼在一起，所以本质上还是可以看做是图像的额外特征，因此在图像上降token的方法直接拿过来就行，唯一需要考虑的就是降到多少。<br>
+目前训练时降token的方法我认为主要分为三种（推理时也是可以动态降token的，这里暂时不讨论）</p>
+<ul>
+<li>
+<p>使用Pooling进行下采样，大部分采用adaptive pooling，</p>
+</li>
+<li>
+<p>Pixel shuffle，以InternVL为代表，使用通道换空间，减少空间增加通道，数据维度变化，[W, H, C] -&gt; [W//s, H//s, C//(s^2)]</p>
+</li>
+<li>
+<p>以Qformer为代表的可学习查询(learnable query)方法。这种方法通过让查询向量与视觉token计算注意力来实现token压缩。然而，这种方法目前已逐渐被主流模型放弃，关于这个话题，业内也有广泛讨论，可参考知乎上的相关探讨：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/626796690">多模态大语言模型（MLLM）为什么最近的工作中用BLIP2中Q-Former结构的变少了？</a>，主要原因其实有以下几点：</p>
+<ul>
+<li>
+<p>引入了大量额外参数，但性能不如简单的MLP方案，在实际测试中表现不佳（在llava数据集配置下，使用qwen-vl的qformer初始化时，MME指标下降近200点）</p>
+</li>
+<li>
+<p>存在明显技术缺陷：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2312.06742">Honeybee</a>的研究表明，这种压缩方式会导致图像空间位置信息的丢失</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2405.20985">Deco</a>的分析发现，Qformer学习到的视觉语义特征存在重复表达等问题</li>
+</ul>
+</li>
+<li>
+<p>对数据量要求较高，需要大量数据去训练，主要是learnable query完全随机初始化比较难收敛到比较好的结果。目前业界除了qwen vl第一个版本成功训练出效果还不错的qformer，其他模型都差很多，而且这种方式在qwen vl之后的版本也被丢弃掉了。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>这篇文章主要比较了以下几种 token 降采样方法，一是MLP + adaptive average pooling，然后是2D卷积 + adaptive average pooling，最后是MLP+Perceiver，也是和Qformer一样需要学习固定的learnable query作为图像表示，最初是由<a target="_blank" rel="noopener" href="https://samuelalbanie.com/files/digest-slides/2022-05-flamingo.pdf">Flamingo</a>提出，如下图所示。通过可学习的latents参数(shape为[n_latents, hidden_size])来控制输出token数量，query只使用latents生成， key/value使用context(图片特征)和latents的拼接，每个Perceiver层由cross attention和FFN组成， 本文中只使用了一层。<br>
+<img src="/posts/3448224386/perceiver.png" alt="图片"><br>
+<em><center>图7. Perceiver结构示意 </center></em><br>
+比较反直觉的来了，本篇文章发现使用Perceiver的效果是最好的，哪怕是在视频OCR这种任务上也是比adaptive pooling要好的，而且在感知和第一视角的任务上，要显著优于其它两种。感觉这一点还有待验证，从我们实际训练的经验上看，使用adaptive pooling是要好于使用learnable query这种projector的。<br>
+文中提到的这个2D conv layer + adaptive pooling方式，其实就是<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2312.06742">Honeybee</a>这篇工作的方式，但性能并不好。其实这种有inductive bias的projector关键还是在于大量训练数据去堆，因为<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2312.06742">Honeybee</a>这篇工作是在2B级别的图文上进行了训练，我们使用他训练好的模型初始化卷积层，然后mlp改变hidden size这一层重新在llava 数据集上稍微微调一下，即使压缩4-5倍token（576到144,100），效果仍然可以与原始MLP不相上下，由此可见这种有inductive bias的projector关键其实在于大量数据，小数据情况下是训练不出来的。苹果的<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2403.09611">MM1报告</a>中也指出，在大规模数据的预训练情况下，不管是卷积还是attention的projector，下游指令微调后的性能差距不大。<br>
+按照本篇文章说法 “a dataset size of approximately 500K samples is sufficient for moderately sized models (2–4 B parameters) to reliably transfer design insights to larger models.”，也许是在500k的规模上做的结构设计实验，这么小规模能够训练出perceiver这种结构，效果明显优于mlp+adaptive pooling，我觉得还是有点说法的，后续有待实验验证。<br>
+<img src="/posts/3448224386/projector_result.png" alt="图片"><br>
+<em><center>图8. 不同projector对性能的影响 </center></em></p>
+<h2 id="训练设置">训练设置</h2>
+<h3 id="视频采样方式">视频采样方式</h3>
+<p>视频帧采样可分为均匀采样（uniform sampling）和每秒固定帧数采样（fps sampling）。均匀采样简单易用，适合训练时保持固定的图片批量大小，但对不同视频长度会导致播放速度变化，影响模型学习物体速度的能力。fps采样更适合视频学习任务，但在视频长度或帧数超出最大容量时，通常需要回退到均匀采样，仍存在一定局限性。</p>
+<p>为解决上述问题，这篇文章采用fps采样并根据最大 token 数限制调整采样间隔，即对视频分段（clip），保持每段内的 fps 不变，而在段间进行间隔调整。主要核心发现有几点：</p>
+<ul>
+<li>fps采样在训练和推理阶段均优于均匀采样。</li>
+<li>每秒 token 数（tps） 和 每帧 token 数（tpf） 是视频理解任务的重要参数。最佳性能通常在 tpf 为 8-32 时取得。fps 的影响较小，但 tpf 和 tps 是性能的决定性因素。<br>
+<img src="/posts/3448224386/sample_fps.png" alt="图片"><br>
+<em><center>图9. FPS、TPF和TPS对性能的影响 </center></em></li>
+</ul>
+<h3 id="训练策略">训练策略</h3>
+<p>关于训练分几个阶段，主流的其实就2个阶段，一是冻住vision encoder和LLM，只训projector，称为预训练对齐阶段，第二阶段就是放开LLM和projector，指令微调阶段。这篇文章认为现在数据多了视频，也就是文本、图像、多图和视频的混合数据，也许可以尝试放开vision encoder，去更好学习视频和文本的对齐。如下图所示，可以发现三阶段确实有助于提高性能，尤其是reasoning的性能，其实就是在第一阶段和第二阶段中间放开vision encoder和projector，冻住LLM，这种策略在internVL2和qwen等一些多模态模型中也采用了，当数据当中存在OCR这类需要较为细粒度信息才能理解的时候，放开vision encoder能够更好的对齐。<br>
+值得注意的是，当冻住LLM的时候，这篇文章选择只在视频数据上进行训练，没有加图文数据，但我们在训练中发现，使用图文和视频的混合数据其实是能得到更好的下游性能。<br>
+<img src="/posts/3448224386/train_strategy.png" alt="图片"><br>
+<em><center>图10. 训练阶段策略 </center></em></p>
+<h3 id="数据比例">数据比例</h3>
+<p><img src="/posts/3448224386/data_ablation.png" alt="图片"><br>
+<em><center>图11. 数据混合比例对性能的影响  </center></em><br>
+关于数据混合比例，比较符合直觉，首先文本数据肯定是必须要有的，用来保持基本的语言能力不下降太多（一定是会降的，只能尽量保证降得不多），这个比例不用太多，10%到20%之间，文章采用的是15%纯文本数据。然后是视频和图像的比例，这篇文章是18:25，其实也就接近1:1，没那么严格的比例。主要还是样本的能力分布，尽可能覆盖你下游测试集的能力就行，数据集的形式上，单轮QA，Caption、多轮图像QA，多轮视频QA等都需要尽量覆盖到，如下图所示。</p>
+<p><img src="/posts/3448224386/data_compose.png" alt="图片"><br>
+<em><center>图12. 数据组成  </center></em></p>
+<h2 id="模型表现">模型表现</h2>
+<p><img src="/posts/3448224386/capability.png" alt="图片"><br>
+<em><center>图13. 模型性能  </center></em><br>
+可以看到，Apoll系列模型相比Open-source 和 Open-weight 模型，整体表现显著领先于许多同类开源模型。在 ApolloBench 上，Apollo-7B 的 Reasoning和Perception上都在70左右，超越大部分开源模型，但也可以看到Qwen2VL-7B的视频理解能力也是很能打，在ApollBench性能不输本文模型，尤其在OCR任务上是显著更优的，可以推测还是受到了图像token压缩的影响。QwenVL2这种动态分辨率无token压缩的模型，细粒度理解能力还是会更强。<br>
+相比于闭源模型，性能差距还是比较明显，不过考虑到模型规模和数据规模肯定不是一个量级，所以本文能在7B上取得比一些30B量级模型还高的性能还是比较有说服力的，为设计高效的视频理解模型提供了非常有价值的参考。</p>
 
       
 
@@ -520,7 +648,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://dyyoungg.github.io/posts/1962388397/" title="Hexo + Next 博客配置记录">https://dyyoungg.github.io/posts/1962388397/</a>
+    <a href="https://dyyoungg.github.io/posts/3448224386/" title="从Apoll看视频理解模型的设计">https://dyyoungg.github.io/posts/3448224386/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -545,9 +673,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" rel="tag"><i class="fa fa-tag"></i> Hexo博客搭建</a>
+            <a href="/tags/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/" rel="tag"><i class="fa fa-tag"></i> 视频理解</a>
           
-            <a href="/tags/Next%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96/" rel="tag"><i class="fa fa-tag"></i> Next主题优化</a>
+            <a href="/tags/Vision-encoder/" rel="tag"><i class="fa fa-tag"></i> Vision encoder</a>
+          
+            <a href="/tags/Token-%E5%8E%8B%E7%BC%A9/" rel="tag"><i class="fa fa-tag"></i> Token 压缩</a>
+          
+            <a href="/tags/%E5%A4%9A%E6%A8%A1%E6%80%81%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1/" rel="tag"><i class="fa fa-tag"></i> 多模态结构设计</a>
           
         </div>
       
@@ -560,15 +692,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/posts/2274603809/" rel="next" title="如何优雅的让LLM成为洗数据工具人">
+                <i class="fa fa-chevron-left"></i> 如何优雅的让LLM成为洗数据工具人
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/posts/2274603809/" rel="prev" title="如何优雅的让LLM成为洗数据工具人">
-                如何优雅的让LLM成为洗数据工具人 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -596,6 +728,8 @@
     
     
       
+    
+      
         
         
         
@@ -606,6 +740,8 @@
           
             
           
+        
+          
             
           
             
@@ -615,6 +751,8 @@
             
           
             
+          
+        
           
             
           
@@ -651,6 +789,18 @@
             
           
         
+          
+            
+          
+            
+          
+        
+          
+            
+          
+            
+          
+        
         
         
         
@@ -661,8 +811,6 @@
 
         
         
-      
-    
       
     
 
@@ -881,7 +1029,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E5%B7%A5%E4%BD%9C"><span class="nav-text">前置工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gitnodejs%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE"><span class="nav-text">Git&#x2F;Node.js安装配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hexo%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85"><span class="nav-text">Hexo环境安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#next%E4%B8%BB%E9%A2%98%E5%AE%89%E8%A3%85"><span class="nav-text">Next主题安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#github%E9%83%A8%E7%BD%B2"><span class="nav-text">Github部署</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#next%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96"><span class="nav-text">Next主题优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E5%BC%8F%E6%B8%B2%E6%9F%93"><span class="nav-text">公式渲染</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0markdown-preview%E5%9B%BE%E5%83%8F%E8%B7%AF%E5%BE%84%E9%97%AE%E9%A2%98"><span class="nav-text">本地Markdown Preview图像路径问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F"><span class="nav-text">评论系统</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%84%E6%B5%8B%E6%95%B0%E6%8D%AE%E6%9E%84%E5%BB%BA"><span class="nav-text">评测数据构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="nav-text">模型结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vision-encoder"><span class="nav-text">Vision Encoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#projector"><span class="nav-text">Projector</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E8%AE%BE%E7%BD%AE"><span class="nav-text">训练设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%86%E9%A2%91%E9%87%87%E6%A0%B7%E6%96%B9%E5%BC%8F"><span class="nav-text">视频采样方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E7%AD%96%E7%95%A5"><span class="nav-text">训练策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%AF%94%E4%BE%8B"><span class="nav-text">数据比例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E8%A1%A8%E7%8E%B0"><span class="nav-text">模型表现</span></a></li></ol></div>
             
 
           </div>

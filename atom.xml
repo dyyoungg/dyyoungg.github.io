@@ -6,7 +6,7 @@
   <link href="https://dyyoungg.github.io/atom.xml" rel="self"/>
   
   <link href="https://dyyoungg.github.io/"/>
-  <updated>2025-01-07T15:25:03.084Z</updated>
+  <updated>2025-01-12T17:00:03.313Z</updated>
   <id>https://dyyoungg.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>从Apoll看视频理解模型的设计</title>
+    <link href="https://dyyoungg.github.io/posts/3448224386/"/>
+    <id>https://dyyoungg.github.io/posts/3448224386/</id>
+    <published>2025-01-08T03:28:07.000Z</published>
+    <updated>2025-01-12T17:00:03.313Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;这篇文章主要分享一篇视频理解领域的多模态大模型paper，来自Meta genAI和斯坦福的工作，&lt;a href=&quot;https://arxiv.org/abs/2412.10360&quot;&gt;Apollo: An Exploration of Video Understanding in Large Multimodal Models&lt;/a&gt;，这篇文章比较全面的探索了多模态视频理解模型中的关键设计和训练策略，非常具有参考和借鉴意义。我也将结合自己的实际训练经验，谈谈多模态大模型训练和结构上的一些认知。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="多模态" scheme="https://dyyoungg.github.io/categories/%E5%A4%9A%E6%A8%A1%E6%80%81/"/>
+    
+    
+    <category term="视频理解" scheme="https://dyyoungg.github.io/tags/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/"/>
+    
+    <category term="Vision encoder" scheme="https://dyyoungg.github.io/tags/Vision-encoder/"/>
+    
+    <category term="Token 压缩" scheme="https://dyyoungg.github.io/tags/Token-%E5%8E%8B%E7%BC%A9/"/>
+    
+    <category term="多模态结构设计" scheme="https://dyyoungg.github.io/tags/%E5%A4%9A%E6%A8%A1%E6%80%81%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1/"/>
+    
+  </entry>
   
   <entry>
     <title>如何优雅的让LLM成为洗数据工具人</title>
