@@ -491,33 +491,26 @@
       
         <p>这篇文章主要分享一篇视频理解领域的多模态大模型paper，来自Meta genAI和斯坦福的工作，<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2412.10360">Apollo: An Exploration of Video Understanding in Large Multimodal Models</a>，这篇文章比较全面的探索了多模态视频理解模型中的关键设计和训练策略，非常具有参考和借鉴意义。我也将结合自己的实际训练经验，谈谈多模态大模型训练和结构上的一些认知。</p>
 <span id="more"></span>
-<h2 id="前言">前言</h2>
-<p><img src="/posts/3448224386/apoll_intro.png" alt="图片"><br>
-<em><center>图1. Introduction</center></em></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><img src="/posts/3448224386/apoll_intro.png" alt="图片"><br><em><center>图1. Introduction</center></em></p>
 <p>这篇文章还是聚焦于vision encoder + Projector + LLM这种级联式的多模态模型，主要实验的LLM为Qwen2系列的大语言模型（不用自家的llama？手动狗头）。插句题外话，qwen的模型确实很不错，刷榜表现和实际使用体验下来差别没有那么大，不像某些模型，就不点名了，我们在平常的实验也是主要使用的qwen系列模型。回到正题，Apoll这篇文章主要探索了以下几个关键问题：</p>
 <ol>
-<li>模型结构
-<ul>
+<li>模型结构<ul>
 <li>vision encoder的组合</li>
 <li>vision projector的选择</li>
 </ul>
 </li>
-<li>训练设置
-<ul>
+<li>训练设置<ul>
 <li>视频应该如何被采样</li>
 <li>vision encoder在训练不同阶段的策略</li>
 <li>纯文本/图像/视频数据的混合比例</li>
 </ul>
 </li>
-<li>模型评测
-<ul>
+<li>模型评测<ul>
 <li>评测数据集构建</li>
 </ul>
 </li>
 </ol>
-<h2 id="评测数据构建">评测数据构建</h2>
-<p><img src="/posts/3448224386/benchmark.png" alt="图片"><br>
-<em><center>图2. 模型表现在不同视频测试数据集的相关性矩阵</center></em></p>
+<h2 id="评测数据构建"><a href="#评测数据构建" class="headerlink" title="评测数据构建"></a>评测数据构建</h2><p><img src="/posts/3448224386/benchmark.png" alt="图片"><br><em><center>图2. 模型表现在不同视频测试数据集的相关性矩阵</center></em></p>
 <p>既然要探索结构和训练设置上的效果，那就需要有一个评价效果的测试集，从而能够全面的反映模型在视频理解各个方面的能力。文章首先分析了模型表现在不同视频测试集，如Video-MME, TempCompass, LongVideoBench, MLVU, NExTQA, 和PerceptionTest之间的相关性，如上图2红色框所示，可以看到不同数据集间的评估是存在冗余的。文章还评估了不同问题类型和视频时长对模型表现的影响，结果发现无论是视频时长还是问题类型的变化，模型的表现都表现出高度相关性，这意味着它们对评估多样性或模型能力区分的影响较小。</p>
 <p>于是文章设计了一个更高效且有效的评测基准——ApolloBench，主要使用多选题，移除那些可以通过文本或图像输入轻松回答的题目（正确率超过50%），剔除不需要视频感知的问题。将问题划分为五大类与时间感知相关的类别：</p>
 <ul>
@@ -528,94 +521,53 @@
 <li>Reasoning（推理能力）</li>
 </ul>
 <p>根据模型的区分能力（熵）筛选出表现最佳的400道题目，并人工验证每个题目的正确性。下面这张图用来验证 ApolloBench 在评估视频感知能力上的有效性。如下图红色框线内的浅蓝色和黄色部分。</p>
-<p><img src="/posts/3448224386/apollbench.png" alt="图片"><br>
-<em><center>图3. ApollBench </center></em></p>
+<p><img src="/posts/3448224386/apollbench.png" alt="图片"><br><em><center>图3. ApollBench </center></em></p>
 <p>浅蓝色部分表示视频与文本输入之间的性能差距。如果浅蓝色区域较大，表明视频感知能力显著提升了性能。如果浅蓝色区域较小，则表明视频输入的优势较弱，模型可能更多依赖文本理解。</p>
 <p>黄色部分表示视频与单帧图像输入之间的性能差距，黄色区域较大，表明视频中时间信息（动态特征）对任务有重要贡献，黄色区域较小，表明静态图像输入已包含大部分关键信息，时间信息作用较小。</p>
 <p>可以看到这两个差距在所有测试集中都是最大的，说明ApolloBench的设计更注重视频感知能力，区分模型性能更明显。</p>
-<h2 id="模型结构">模型结构</h2>
-<p>在探索模型结构设计之前，这篇文章提出了一个scaling consistency的概念，即通过较小模型和数据集来指导更大规模模型的结构设计，从而节省资源和提高效率。文章比较了21 种模型变化（包括架构、视频采样方法、训练策略、数据组合等设计方面），使用四种不同规模的LLM：Qwen2-0.5B、Qwen2-1.5B、Qwen1.5-4B、Qwen2-7B, 总计训练了 84 个模型，然后计算这些模型之间的性能相关性。可以看到，2~4B和7B模型的性能相关性是最高的，R2大于0.9，因此可以通过在小模型上进行设计实验，然后迁移到更大模型上。</p>
+<h2 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h2><p>在探索模型结构设计之前，这篇文章提出了一个scaling consistency的概念，即通过较小模型和数据集来指导更大规模模型的结构设计，从而节省资源和提高效率。文章比较了21 种模型变化（包括架构、视频采样方法、训练策略、数据组合等设计方面），使用四种不同规模的LLM：Qwen2-0.5B、Qwen2-1.5B、Qwen1.5-4B、Qwen2-7B, 总计训练了 84 个模型，然后计算这些模型之间的性能相关性。可以看到，2~4B和7B模型的性能相关性是最高的，R2大于0.9，因此可以通过在小模型上进行设计实验，然后迁移到更大模型上。</p>
 <p>这应该是个常规操作了目前，尤其是在更大的模型上，使用小模型去验证数据集质量、调整数据集比例或者结构设计。</p>
-<p><img src="/posts/3448224386/scaling_consistence.png" alt="图片"><br>
-<em><center>图4. Scaling Consistency</center></em></p>
-<h3 id="vision-encoder">Vision Encoder</h3>
-<p>目前图像多模态大模型基本都是采用CLIP这种经过语义对齐过的vision encoder，而在视频理解中，大家延续了图像理解的做法，将视频采样成多帧图像，然后每张图像encode信息顺序排列作为视频特征，而视频的理解还是由LLM去图像信息中抽取相应的语义特征，虽然这种方式缺少了时间维度的信息，但由于图像encoder产生的特征还是比较高质量的，信息密度更高，加上LLM本身有能力强大的信息抽取和理解能力，因此在一些时序的视频信息理解benchmark上也能有不错的性能。文中也提到早期工作也有使用video encoder做视频理解的，比如 <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2311.10122">Video-llava</a>， <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2305.06355">Video-chat</a>，如下图所示。<br>
-<img src="/posts/3448224386/video_llava.png" alt="图片"><br>
-<em><center>图5. 早期视频理解工作的一些架构</center></em></p>
+<p><img src="/posts/3448224386/scaling_consistence.png" alt="图片"><br><em><center>图4. Scaling Consistency</center></em></p>
+<h3 id="vision-encoder"><a href="#Vision-Encoder" class="headerlink" title="Vision Encoder"></a>Vision Encoder</h3><p>目前图像多模态大模型基本都是采用CLIP这种经过语义对齐过的vision encoder，而在视频理解中，大家延续了图像理解的做法，将视频采样成多帧图像，然后每张图像encode信息顺序排列作为视频特征，而视频的理解还是由LLM去图像信息中抽取相应的语义特征，虽然这种方式缺少了时间维度的信息，但由于图像encoder产生的特征还是比较高质量的，信息密度更高，加上LLM本身有能力强大的信息抽取和理解能力，因此在一些时序的视频信息理解benchmark上也能有不错的性能。文中也提到早期工作也有使用video encoder做视频理解的，比如 <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2311.10122">Video-llava</a>， <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2305.06355">Video-chat</a>，如下图所示。<br><img src="/posts/3448224386/video_llava.png" alt="图片"><br><em><center>图5. 早期视频理解工作的一些架构</center></em></p>
 <p>但后面的工作基本上还是转向了图像encoder。我们早期也试过internvideo这样的视频encoder，但训练出来效果并不比clip好，很多指标都差很多，尽管video encoder看起来引入了连续帧的一些信息，但信息的密度变低了，并且粒度肯定是不如vision encoder的。而大家后面都转向用图像encoder做视频理解，其中主要的一个原因就是vision encoder的特征信息量比目前的video encoder大，做一些需要细粒度理解的任务还是会更强一些。另外采用图像encoder，也能很方便的统一视频理解，除此之外，图像的高质量数据确实要比视频多很多，这也是为什么到现在也没有一个video encoder能够替代掉vision encoder做视频理解。</p>
 <p>而这篇文章探索了多种图像和视频编码器及其组合，评估这些组合对最终模型性能的影响。</p>
 <ul>
 <li>视频encoder：InternVideo2(4 frames)、LanguageBind-Video v1.5(8 frames)、VideoMAE(16 frames)、V-JEPA(16 frames)。</li>
 <li>图像encoder：SigLIP-SO400M、LanguageBind-Image、DINOv2。</li>
 </ul>
-<p><img src="/posts/3448224386/videoencoders.png" alt="图片"><br>
-<em><center>图6. Video encoder 和 Image encoder </center></em></p>
+<p><img src="/posts/3448224386/videoencoders.png" alt="图片"><br><em><center>图6. Video encoder 和 Image encoder </center></em></p>
 <p>从图6也是可以明显的看出来，单个encoder的情况下图像encoder SigLIP是最好的，而组合的情况下，InternVideo2 + SigLIP-SO400M 的表现最好，相比单一编码器在 ApolloBench 上提升了约 7%，这里的特征融合是将视频特征沿着通道维度拼接到图像特征后面。这个实验也基本验证了video encoder确实可以带来时序理解上的提升。</p>
 <p>这里额外多说一点，我个人不是很喜欢这种fusion的方法，我觉得这只能算比较tricky的偷懒做法，多模态图像理解也有很多工作去探索多种vision encoder的特征融合，有些融合5、6个encoder，但这样真正带来的收益有多少呢？或者说带来的收益真的值得用这么多计算资源去换吗？这些融合工作的出发点都是一样，缺啥补啥，觉得CLIP的特征属于比较高层的语义信息，缺少low level的feature，所以对一些像OCR这样需要非常细粒度的任务不太友好，于是加上一些OCR专用的encoder，又或者对grounding任务缺少目标级别的细粒度理解，于是加上SAM等等。像deepseek-vl 在第一个版本的时候还是 SigLIP + SAM的encoder fusion，第二个版本就直接去掉了SAM，换成了MOE的LLM和动态分块切图（internvl2系列也是），这里面其实说明了两点，一是LLM增强的收益肯定是大于特征增强的，二是对于像OCR等需要细粒度的任务，图片的分辨率远比特征重要，在有对应的数据情况下，完全可以通过训练策略去改善CLIP或SigLIP的特征信息，这才是一个更优雅的解法。</p>
-<h3 id="projector">Projector</h3>
-<p>对于视频理解模型，Projector显得尤为重要，因为这直接决定了LLM 能处理多长的视频。以llava这样的多模态模型为例，如果输入为336*336， patchfy之后就是 （336//14）**2=576个token，当LLM上下文长度为4096时，也就处理不到10张图，按采样fps=1来算，也就处理不到10s，因此在视频理解模型中，降token是必须要考虑的一件事。<br>
-由于目前的视频理解模型其实主要还是用的图像encoder，包括Apoll这篇文章，尽管使用了视频encoder，但特征融合是在通道维度和图像拼在一起，所以本质上还是可以看做是图像的额外特征，因此在图像上降token的方法直接拿过来就行，唯一需要考虑的就是降到多少。<br>
-目前训练时降token的方法我认为主要分为三种（推理时也是可以动态降token的，这里暂时不讨论）</p>
+<h3 id="projector"><a href="#Projector" class="headerlink" title="Projector"></a>Projector</h3><p>对于视频理解模型，Projector显得尤为重要，因为这直接决定了LLM 能处理多长的视频。以llava这样的多模态模型为例，如果输入为336<em>336， patchfy之后就是 （336//14）*</em>2=576个token，当LLM上下文长度为4096时，也就处理不到10张图，按采样fps=1来算，也就处理不到10s，因此在视频理解模型中，降token是必须要考虑的一件事。<br>由于目前的视频理解模型其实主要还是用的图像encoder，包括Apoll这篇文章，尽管使用了视频encoder，但特征融合是在通道维度和图像拼在一起，所以本质上还是可以看做是图像的额外特征，因此在图像上降token的方法直接拿过来就行，唯一需要考虑的就是降到多少。<br>目前训练时降token的方法我认为主要分为三种（推理时也是可以动态降token的，这里暂时不讨论）</p>
 <ul>
-<li>
-<p>使用Pooling进行下采样，大部分采用adaptive pooling，</p>
-</li>
-<li>
-<p>Pixel shuffle，以InternVL为代表，使用通道换空间，减少空间增加通道，数据维度变化，[W, H, C] -&gt; [W//s, H//s, C//(s^2)]</p>
-</li>
-<li>
-<p>以Qformer为代表的可学习查询(learnable query)方法。这种方法通过让查询向量与视觉token计算注意力来实现token压缩。然而，这种方法目前已逐渐被主流模型放弃，关于这个话题，业内也有广泛讨论，可参考知乎上的相关探讨：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/626796690">多模态大语言模型（MLLM）为什么最近的工作中用BLIP2中Q-Former结构的变少了？</a>，主要原因其实有以下几点：</p>
+<li>使用Pooling进行下采样，大部分采用adaptive pooling，</li>
+<li>Pixel shuffle，以InternVL为代表，使用通道换空间，减少空间增加通道，数据维度变化，[W, H, C] -&gt; [W//s, H//s, C//(s^2)]</li>
+<li><p>以Qformer为代表的可学习查询(learnable query)方法。这种方法通过让查询向量与视觉token计算注意力来实现token压缩。然而，这种方法目前已逐渐被主流模型放弃，关于这个话题，业内也有广泛讨论，可参考知乎上的相关探讨：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/626796690">多模态大语言模型（MLLM）为什么最近的工作中用BLIP2中Q-Former结构的变少了？</a>，主要原因其实有以下几点：</p>
 <ul>
-<li>
-<p>引入了大量额外参数，但性能不如简单的MLP方案，在实际测试中表现不佳（在llava数据集配置下，使用qwen-vl的qformer初始化时，MME指标下降近200点）</p>
+<li><p>引入了大量额外参数，但性能不如简单的MLP方案，在实际测试中表现不佳（在llava数据集配置下，使用qwen-vl的qformer初始化时，MME指标下降近200点）</p>
 </li>
-<li>
-<p>存在明显技术缺陷：</p>
+<li><p>存在明显技术缺陷：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2312.06742">Honeybee</a>的研究表明，这种压缩方式会导致图像空间位置信息的丢失</li>
 <li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2405.20985">Deco</a>的分析发现，Qformer学习到的视觉语义特征存在重复表达等问题</li>
 </ul>
 </li>
-<li>
-<p>对数据量要求较高，需要大量数据去训练，主要是learnable query完全随机初始化比较难收敛到比较好的结果。目前业界除了qwen vl第一个版本成功训练出效果还不错的qformer，其他模型都差很多，而且这种方式在qwen vl之后的版本也被丢弃掉了。</p>
+<li><p>对数据量要求较高，需要大量数据去训练，主要是learnable query完全随机初始化比较难收敛到比较好的结果。目前业界除了qwen vl第一个版本成功训练出效果还不错的qformer，其他模型都差很多，而且这种方式在qwen vl之后的版本也被丢弃掉了。</p>
 </li>
 </ul>
 </li>
 </ul>
-<p>这篇文章主要比较了以下几种 token 降采样方法，一是MLP + adaptive average pooling，然后是2D卷积 + adaptive average pooling，最后是MLP+Perceiver，也是和Qformer一样需要学习固定的learnable query作为图像表示，最初是由<a target="_blank" rel="noopener" href="https://samuelalbanie.com/files/digest-slides/2022-05-flamingo.pdf">Flamingo</a>提出，如下图所示。通过可学习的latents参数(shape为[n_latents, hidden_size])来控制输出token数量，query只使用latents生成， key/value使用context(图片特征)和latents的拼接，每个Perceiver层由cross attention和FFN组成， 本文中只使用了一层。<br>
-<img src="/posts/3448224386/perceiver.png" alt="图片"><br>
-<em><center>图7. Perceiver结构示意 </center></em><br>
-比较反直觉的来了，本篇文章发现使用Perceiver的效果是最好的，哪怕是在视频OCR这种任务上也是比adaptive pooling要好的，而且在感知和第一视角的任务上，要显著优于其它两种。感觉这一点还有待验证，从我们实际训练的经验上看，使用adaptive pooling是要好于使用learnable query这种projector的。<br>
-文中提到的这个2D conv layer + adaptive pooling方式，其实就是<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2312.06742">Honeybee</a>这篇工作的方式，但性能并不好。其实这种有inductive bias的projector关键还是在于大量训练数据去堆，因为<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2312.06742">Honeybee</a>这篇工作是在2B级别的图文上进行了训练，我们使用他训练好的模型初始化卷积层，然后mlp改变hidden size这一层重新在llava 数据集上稍微微调一下，即使压缩4-5倍token（576到144,100），效果仍然可以与原始MLP不相上下，由此可见这种有inductive bias的projector关键其实在于大量数据，小数据情况下是训练不出来的。苹果的<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2403.09611">MM1报告</a>中也指出，在大规模数据的预训练情况下，不管是卷积还是attention的projector，下游指令微调后的性能差距不大。<br>
-按照本篇文章说法 “a dataset size of approximately 500K samples is sufficient for moderately sized models (2–4 B parameters) to reliably transfer design insights to larger models.”，也许是在500k的规模上做的结构设计实验，这么小规模能够训练出perceiver这种结构，效果明显优于mlp+adaptive pooling，我觉得还是有点说法的，后续有待实验验证。<br>
-<img src="/posts/3448224386/projector_result.png" alt="图片"><br>
-<em><center>图8. 不同projector对性能的影响 </center></em></p>
-<h2 id="训练设置">训练设置</h2>
-<h3 id="视频采样方式">视频采样方式</h3>
-<p>视频帧采样可分为均匀采样（uniform sampling）和每秒固定帧数采样（fps sampling）。均匀采样简单易用，适合训练时保持固定的图片批量大小，但对不同视频长度会导致播放速度变化，影响模型学习物体速度的能力。fps采样更适合视频学习任务，但在视频长度或帧数超出最大容量时，通常需要回退到均匀采样，仍存在一定局限性。</p>
+<p>这篇文章主要比较了以下几种 token 降采样方法，一是MLP + adaptive average pooling，然后是2D卷积 + adaptive average pooling，最后是MLP+Perceiver，也是和Qformer一样需要学习固定的learnable query作为图像表示，最初是由<a target="_blank" rel="noopener" href="https://samuelalbanie.com/files/digest-slides/2022-05-flamingo.pdf">Flamingo</a>提出，如下图所示。通过可学习的latents参数(shape为[n_latents, hidden_size])来控制输出token数量，query只使用latents生成， key/value使用context(图片特征)和latents的拼接，每个Perceiver层由cross attention和FFN组成， 本文中只使用了一层。<br><img src="/posts/3448224386/perceiver.png" alt="图片"><br><em><center>图7. Perceiver结构示意 </center></em><br>比较反直觉的来了，本篇文章发现使用Perceiver的效果是最好的，哪怕是在视频OCR这种任务上也是比adaptive pooling要好的，而且在感知和第一视角的任务上，要显著优于其它两种。感觉这一点还有待验证，从我们实际训练的经验上看，使用adaptive pooling是要好于使用learnable query这种projector的。<br>文中提到的这个2D conv layer + adaptive pooling方式，其实就是<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2312.06742">Honeybee</a>这篇工作的方式，但性能并不好。其实这种有inductive bias的projector关键还是在于大量训练数据去堆，因为<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2312.06742">Honeybee</a>这篇工作是在2B级别的图文上进行了训练，我们使用他训练好的模型初始化卷积层，然后mlp改变hidden size这一层重新在llava 数据集上稍微微调一下，即使压缩4-5倍token（576到144,100），效果仍然可以与原始MLP不相上下，由此可见这种有inductive bias的projector关键其实在于大量数据，小数据情况下是训练不出来的。苹果的<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2403.09611">MM1报告</a>中也指出，在大规模数据的预训练情况下，不管是卷积还是attention的projector，下游指令微调后的性能差距不大。<br>按照本篇文章说法 “a dataset size of approximately 500K samples is sufficient for moderately sized models (2–4 B parameters) to reliably transfer design insights to larger models.”，也许是在500k的规模上做的结构设计实验，这么小规模能够训练出perceiver这种结构，效果明显优于mlp+adaptive pooling，我觉得还是有点说法的，后续有待实验验证。<br><img src="/posts/3448224386/projector_result.png" alt="图片"><br><em><center>图8. 不同projector对性能的影响 </center></em></p>
+<h2 id="训练设置"><a href="#训练设置" class="headerlink" title="训练设置"></a>训练设置</h2><h3 id="视频采样方式"><a href="#视频采样方式" class="headerlink" title="视频采样方式"></a>视频采样方式</h3><p>视频帧采样可分为均匀采样（uniform sampling）和每秒固定帧数采样（fps sampling）。均匀采样简单易用，适合训练时保持固定的图片批量大小，但对不同视频长度会导致播放速度变化，影响模型学习物体速度的能力。fps采样更适合视频学习任务，但在视频长度或帧数超出最大容量时，通常需要回退到均匀采样，仍存在一定局限性。</p>
 <p>为解决上述问题，这篇文章采用fps采样并根据最大 token 数限制调整采样间隔，即对视频分段（clip），保持每段内的 fps 不变，而在段间进行间隔调整。主要核心发现有几点：</p>
 <ul>
 <li>fps采样在训练和推理阶段均优于均匀采样。</li>
-<li>每秒 token 数（tps） 和 每帧 token 数（tpf） 是视频理解任务的重要参数。最佳性能通常在 tpf 为 8-32 时取得。fps 的影响较小，但 tpf 和 tps 是性能的决定性因素。<br>
-<img src="/posts/3448224386/sample_fps.png" alt="图片"><br>
-<em><center>图9. FPS、TPF和TPS对性能的影响 </center></em></li>
+<li>每秒 token 数（tps） 和 每帧 token 数（tpf） 是视频理解任务的重要参数。最佳性能通常在 tpf 为 8-32 时取得。fps 的影响较小，但 tpf 和 tps 是性能的决定性因素。<br><img src="/posts/3448224386/sample_fps.png" alt="图片"><br><em><center>图9. FPS、TPF和TPS对性能的影响 </center></em></li>
 </ul>
-<h3 id="训练策略">训练策略</h3>
-<p>关于训练分几个阶段，主流的其实就2个阶段，一是冻住vision encoder和LLM，只训projector，称为预训练对齐阶段，第二阶段就是放开LLM和projector，指令微调阶段。这篇文章认为现在数据多了视频，也就是文本、图像、多图和视频的混合数据，也许可以尝试放开vision encoder，去更好学习视频和文本的对齐。如下图所示，可以发现三阶段确实有助于提高性能，尤其是reasoning的性能，其实就是在第一阶段和第二阶段中间放开vision encoder和projector，冻住LLM，这种策略在internVL2和qwen等一些多模态模型中也采用了，当数据当中存在OCR这类需要较为细粒度信息才能理解的时候，放开vision encoder能够更好的对齐。<br>
-值得注意的是，当冻住LLM的时候，这篇文章选择只在视频数据上进行训练，没有加图文数据，但我们在训练中发现，使用图文和视频的混合数据其实是能得到更好的下游性能。<br>
-<img src="/posts/3448224386/train_strategy.png" alt="图片"><br>
-<em><center>图10. 训练阶段策略 </center></em></p>
-<h3 id="数据比例">数据比例</h3>
-<p><img src="/posts/3448224386/data_ablation.png" alt="图片"><br>
-<em><center>图11. 数据混合比例对性能的影响  </center></em><br>
-关于数据混合比例，比较符合直觉，首先文本数据肯定是必须要有的，用来保持基本的语言能力不下降太多（一定是会降的，只能尽量保证降得不多），这个比例不用太多，10%到20%之间，文章采用的是15%纯文本数据。然后是视频和图像的比例，这篇文章是18:25，其实也就接近1:1，没那么严格的比例。主要还是样本的能力分布，尽可能覆盖你下游测试集的能力就行，数据集的形式上，单轮QA，Caption、多轮图像QA，多轮视频QA等都需要尽量覆盖到，如下图所示。</p>
-<p><img src="/posts/3448224386/data_compose.png" alt="图片"><br>
-<em><center>图12. 数据组成  </center></em></p>
-<h2 id="模型表现">模型表现</h2>
-<p><img src="/posts/3448224386/capability.png" alt="图片"><br>
-<em><center>图13. 模型性能  </center></em><br>
-可以看到，Apoll系列模型相比Open-source 和 Open-weight 模型，整体表现显著领先于许多同类开源模型。在 ApolloBench 上，Apollo-7B 的 Reasoning和Perception上都在70左右，超越大部分开源模型，但也可以看到Qwen2VL-7B的视频理解能力也是很能打，在ApollBench性能不输本文模型，尤其在OCR任务上是显著更优的，可以推测还是受到了图像token压缩的影响。QwenVL2这种动态分辨率无token压缩的模型，细粒度理解能力还是会更强。<br>
-相比于闭源模型，性能差距还是比较明显，不过考虑到模型规模和数据规模肯定不是一个量级，所以本文能在7B上取得比一些30B量级模型还高的性能还是比较有说服力的，为设计高效的视频理解模型提供了非常有价值的参考。</p>
+<h3 id="训练策略"><a href="#训练策略" class="headerlink" title="训练策略"></a>训练策略</h3><p>关于训练分几个阶段，主流的其实就2个阶段，一是冻住vision encoder和LLM，只训projector，称为预训练对齐阶段，第二阶段就是放开LLM和projector，指令微调阶段。这篇文章认为现在数据多了视频，也就是文本、图像、多图和视频的混合数据，也许可以尝试放开vision encoder，去更好学习视频和文本的对齐。如下图所示，可以发现三阶段确实有助于提高性能，尤其是reasoning的性能，其实就是在第一阶段和第二阶段中间放开vision encoder和projector，冻住LLM，这种策略在internVL2和qwen等一些多模态模型中也采用了，当数据当中存在OCR这类需要较为细粒度信息才能理解的时候，放开vision encoder能够更好的对齐。<br>值得注意的是，当冻住LLM的时候，这篇文章选择只在视频数据上进行训练，没有加图文数据，但我们在训练中发现，使用图文和视频的混合数据其实是能得到更好的下游性能。<br><img src="/posts/3448224386/train_strategy.png" alt="图片"><br><em><center>图10. 训练阶段策略 </center></em></p>
+<h3 id="数据比例"><a href="#数据比例" class="headerlink" title="数据比例"></a>数据比例</h3><p><img src="/posts/3448224386/data_ablation.png" alt="图片"><br><em><center>图11. 数据混合比例对性能的影响  </center></em><br>关于数据混合比例，比较符合直觉，首先文本数据肯定是必须要有的，用来保持基本的语言能力不下降太多（一定是会降的，只能尽量保证降得不多），这个比例不用太多，10%到20%之间，文章采用的是15%纯文本数据。然后是视频和图像的比例，这篇文章是18:25，其实也就接近1:1，没那么严格的比例。主要还是样本的能力分布，尽可能覆盖你下游测试集的能力就行，数据集的形式上，单轮QA，Caption、多轮图像QA，多轮视频QA等都需要尽量覆盖到，如下图所示。</p>
+<p><img src="/posts/3448224386/data_compose.png" alt="图片"><br><em><center>图12. 数据组成  </center></em></p>
+<h2 id="模型表现"><a href="#模型表现" class="headerlink" title="模型表现"></a>模型表现</h2><p><img src="/posts/3448224386/capability.png" alt="图片"><br><em><center>图13. 模型性能  </center></em><br>可以看到，Apoll系列模型相比Open-source 和 Open-weight 模型，整体表现显著领先于许多同类开源模型。在 ApolloBench 上，Apollo-7B 的 Reasoning和Perception上都在70左右，超越大部分开源模型，但也可以看到Qwen2VL-7B的视频理解能力也是很能打，在ApollBench性能不输本文模型，尤其在OCR任务上是显著更优的，可以推测还是受到了图像token压缩的影响。QwenVL2这种动态分辨率无token压缩的模型，细粒度理解能力还是会更强。<br>相比于闭源模型，性能差距还是比较明显，不过考虑到模型规模和数据规模肯定不是一个量级，所以本文能在7B上取得比一些30B量级模型还高的性能还是比较有说服力的，为设计高效的视频理解模型提供了非常有价值的参考。</p>
 
       
 
@@ -1070,7 +1022,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">8.9k</span>
+    <span title="Site words total count">8.8k</span>
   
 </div>
 

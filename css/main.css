@@ -1842,7 +1842,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ffa352;
+  background: #5e9f1d;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3623,11 +3623,11 @@ code {
   background-color: #252525;
 }
 .darkmode--activated .post-body .popular-posts-container .popular-posts-header {
-  color: #f0f0f0;
+  color: #fff;
   border-bottom-color: #555;
 }
 .darkmode--activated .post-body .popular-posts-container .popular-posts-item .popular-posts-title a {
-  color: #d0d0d0;
+  color: #fff;
   border-bottom-color: #555;
 }
 .darkmode--activated .post-body .popular-posts-container .popular-posts-item .popular-posts-title a:hover {
